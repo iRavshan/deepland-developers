@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sitemaps',
 
+    'mdeditor',
+
     'apps.users.apps.UsersConfig',
     'apps.courses.apps.CoursesConfig',
 ]
@@ -81,6 +83,36 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+MDEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',  # Redaktor kengligi
+        'height': 500,    # Redaktor balandligi
+        'language': 'en',
+        'toolbar': [
+            "undo", "redo", "|",
+            "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+            "h1", "h2", "h3", "h4", "h5", "h6", "|",
+            "list-ul", "list-ol", "hr", "|",
+            "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+            "emoji", "html-entities", "pagebreak", "goto-line", "|",
+            "help", "info", "||", "preview", "watch", "fullscreen"
+        ],
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        'image_folder': 'editor',  # media/editor/ papkasiga rasmlarni yuklaydi
+        'theme': 'default',        # muharrir mavzusi
+        'preview_theme': 'default', # ko'rish rejimi mavzusi
+        'editor_theme': 'default',
+        'toolbar_autofixed': True,
+        'search_replace': True,
+        'emoji': True,
+        'tex': True,               # LaTeX (Matematik formulalar)ni yoqish
+        'flow_chart': True,        # Sxemalar (Flowchart)
+        'sequence_diagram': True,  # Ketma-ketlik diagrammalari
+        'watch': True,             # Real-vaqt rejimida o'ng tomonda ko'rsatish
+        'line_numbers': True,      # Kod qatorlari raqami
+    }
+}
 
 LOGIN_URL = 'login'
 

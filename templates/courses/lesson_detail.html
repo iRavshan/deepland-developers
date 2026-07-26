@@ -55,46 +55,7 @@
             </div>
 
             <div style="margin: 2rem 0; font-size: 1.05rem; line-height: 1.8; color: var(--text-primary);">
-                <p>{{ lesson.content }}</p>
-
-                <h2>Implementation & Code Snippet</h2>
-                <p>Below is a production-ready Python & PyTorch implementation example demonstrating the architectural flow:</p>
-
-                <div class="google-code-box">
-                    <div class="google-code-header">
-                        <span>Python 3.14 • PyTorch Implementation</span>
-                        <span style="cursor: pointer; color: #8ab4f8;" onclick="navigator.clipboard.writeText(document.getElementById('code-sample').innerText); alert('Code copied to clipboard!');">
-                            <i data-lucide="copy" style="width: 14px; vertical-align: middle;"></i> Copy
-                        </span>
-                    </div>
-                    <pre id="code-sample">import torch
-import torch.nn as nn
-import torch.optim as optim
-
-class NeuralNetworkModule(nn.Module):
-    def __init__(self, input_dim=784, hidden_dim=128, num_classes=10):
-        super(NeuralNetworkModule, self).__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_dim, num_classes)
-        
-    def forward(self, x):
-        out = self.fc1(x)
-        out = self.relu(out)
-        out = self.fc2(out)
-        return out
-
-# Initialize model and optimizer
-model = NeuralNetworkModule()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-criterion = nn.CrossEntropyLoss()
-
-print("Model architecture initialized successfully.")
-print(model)</pre>
-                </div>
-
-                <h2>Summary & Next Steps</h2>
-                <p>Make sure to test this architecture locally within your Python virtual environment. Proceed to the next lesson to learn advanced optimizations.</p>
+                <p>{{ lesson.content|safe }}</p>
             </div>
 
             <!-- Navigation Buttons -->

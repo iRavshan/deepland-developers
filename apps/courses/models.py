@@ -1,4 +1,5 @@
 from django.db import models
+from mdeditor.fields import MDTextField
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -61,9 +62,8 @@ class Lesson(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='lessons')
     title = models.CharField(max_length=200)
     order = models.PositiveIntegerField(default=1)
-    content = models.TextField()
+    content = MDTextField(verbose_name="Kontent")
     duration = models.CharField(max_length=20, default='15 daqiqa')
-    xp_points = models.IntegerField(default=50)
     duration = models.CharField(max_length=20, default='15 mins')
 
     class Meta:

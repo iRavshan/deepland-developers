@@ -9,6 +9,7 @@ urlpatterns = [
     path('humans.txt', TemplateView.as_view(template_name='humans.txt', content_type='text/plain')),
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     path('llms.txt', TemplateView.as_view(template_name='llms.txt', content_type='text/plain')),
+    path('mdeditor/', include('mdeditor.urls')),
 ]
 
 handler404 = 'config.views.custom_404'

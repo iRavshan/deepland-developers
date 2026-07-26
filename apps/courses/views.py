@@ -1,3 +1,4 @@
+import markdown
 from django.shortcuts import render, get_object_or_404
 from apps.courses.models import Category, Course, Lesson
 from apps.users.models import UserProfile
@@ -45,6 +46,15 @@ def lesson_detail(request, course_slug, lesson_order):
     lesson = get_object_or_404(Lesson, course=course, order=lesson_order)
     next_lesson = Lesson.objects.filter(course=course, order=lesson_order + 1).first()
     prev_lesson = Lesson.objects.filter(course=course, order=lesson_order - 1).first()
+
+    lesson.content = markdown.markdown(
+        lesson.content,
+        extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite', 
+            'markdown.extensions.toc',         
+        ]
+    )
 
     context = {
         'course': course,
