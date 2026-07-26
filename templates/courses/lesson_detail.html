@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Developers{% endblock %}
+
+{% block content %}
+<div class="doc-wrapper">
+    <!-- Left Navigation Tree Sidebar -->
+    <aside class="doc-sidebar">
+        <div style="margin-bottom: 1.5rem; padding: 0 0.5rem;">
+            <a href="{% url 'course_detail' course.slug %}" style="color: var(--g-blue); text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.4rem;">
+                <i data-lucide="arrow-left" style="width: 14px;"></i> {{ course.title }}
+            </a>
+        </div>
+
+        <div class="doc-sidebar-header">Lesson Navigation</div>
+        <ul class="doc-nav-list">
+            {% for l in course.lessons.all %}
+            <li class="doc-nav-item">
+                <a href="{% url 'lesson_detail' course.slug l.order %}" class="{% if l.order == lesson.order %}active{% endif %}">
+                    <span style="font-weight: 700; opacity: 0.7;">{{ l.order }}.</span>
+                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- Main Content Article -->
+    <main class="doc-content">
+        <!-- Breadcrumbs -->
+        <div style="display: flex; align-items: center; gap: 0.4rem; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 1.5rem;">
+            <a href="{% url 'course_list' %}" style="color: var(--text-secondary); text-decoration: none;">Courses</a>
+            <i data-lucide="chevron-right" style="width: 14px;"></i>
+            <a href="{% url 'course_detail' course.slug %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a>
+            <i data-lucide="chevron-right" style="width: 14px;"></i>
+            <span style="color: var(--text-primary); font-weight: 500;">Lesson {{ lesson.order }}</span>
+        </div>
+
+        <article class="doc-article">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span class="g-tag g-tag-intermediate">Lesson {{ lesson.order }} of {{ course.lessons.count }}</span>
+                <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
+            </div>
+
+            <h1>{{ lesson.title }}</h1>
+
+            <!-- Google Callout Box -->
+            <div class="google-callout">
+                <div class="google-callout-title">
+                    <i data-lucide="info" style="width: 18px;"></i> Key Learning Objective
+                </div>
+                <div>
+                    In this lesson, you will learn the fundamental concepts and practical implementation of {{ lesson.title|lower }}.
+                </div>
+            </div>
+
+            <div style="margin: 2rem 0; font-size: 1.05rem; line-height: 1.8; color: var(--text-primary);">
+                <p>{{ lesson.content }}</p>
+
+                <h2>Implementation & Code Snippet</h2>
+                <p>Below is a production-ready Python & PyTorch implementation example demonstrating the architectural flow:</p>
+
+                <div class="google-code-box">
+                    <div class="google-code-header">
+                        <span>Python 3.14 • PyTorch Implementation</span>
+                        <span style="cursor: pointer; color: #8ab4f8;" onclick="navigator.clipboard.writeText(document.getElementById('code-sample').innerText); alert('Code copied to clipboard!');">
+                            <i data-lucide="copy" style="width: 14px; vertical-align: middle;"></i> Copy
+                        </span>
+                    </div>
+                    <pre id="code-sample">import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class NeuralNetworkModule(nn.Module):
+    def __init__(self, input_dim=784, hidden_dim=128, num_classes=10):
+        super(NeuralNetworkModule, self).__init__()
+        self.fc1 = nn.Linear(input_dim, hidden_dim)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_dim, num_classes)
+        
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.relu(out)
+        out = self.fc2(out)
+        return out
+
+# Initialize model and optimizer
+model = NeuralNetworkModule()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+criterion = nn.CrossEntropyLoss()
+
+print("Model architecture initialized successfully.")
+print(model)</pre>
+                </div>
+
+                <h2>Summary & Next Steps</h2>
+                <p>Make sure to test this architecture locally within your Python virtual environment. Proceed to the next lesson to learn advanced optimizations.</p>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
+                {% if prev_lesson %}
+                <a href="{% url 'lesson_detail' course.slug prev_lesson.order %}" class="btn-google btn-google-outline">
+                    <i data-lucide="arrow-left" style="width: 16px;"></i> Previous Lesson
+                </a>
+                {% else %}
+                <div></div>
+                {% endif %}
+
+                {% if next_lesson %}
+                <a href="{% url 'lesson_detail' course.slug next_lesson.order %}" class="btn-google btn-google-primary">
+                    Next Lesson <i data-lucide="arrow-right" style="width: 16px;"></i>
+                </a>
+                {% else %}
+                <a href="{% url 'course_detail' course.slug %}" class="btn-google btn-google-primary">
+                    Finish Course <i data-lucide="check-circle" style="width: 16px;"></i>
+                </a>
+                {% endif %}
+            </div>
+        </article>
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Developer Profile — {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+    <!-- Profile Card Header -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; display: flex; align-items: center; gap: 2rem; margin-bottom: 2.5rem;">
+        <img src="{{ profile.avatar_url }}" alt="Avatar" style="width: 96px; height: 96px; border-radius: var(--radius-full); background: #ffffff; border: 2px solid var(--g-blue); padding: 4px;">
+        
+        <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
+                <h1 style="font-size: 2rem; font-weight: 600; color: var(--text-primary);">{{ user.get_full_name|default:user.username }}</h1>
+                <span class="g-tag g-tag-intermediate">{{ profile.rank_title }}</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0.75rem;">@{{ user.username }} • {{ profile.bio }}</p>
+
+            <div style="display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+                <span><i data-lucide="award" style="color: var(--g-blue); width: 16px; vertical-align: middle;"></i> Badge: <strong>Google Developer Expert</strong></span>
+                <span><i data-lucide="check-circle" style="color: var(--g-green); width: 16px; vertical-align: middle;"></i> Status: <strong>Active Engineer</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard Cards -->
+    <div class="grid-cards">
+        <div class="g-card">
+            <div>
+                <div class="g-card-icon g-card-icon-blue">
+                    <i data-lucide="book-open" style="width: 22px;"></i>
+                </div>
+                <h3 class="g-card-title">Enrolled Courses</h3>
+                <p class="g-card-desc">Deep Learning & Neural Networks Fundamentals, DSA Masterclass</p>
+            </div>
+            <a href="{% url 'course_list' %}" class="btn-google btn-google-text" style="align-self: flex-start; padding-left: 0;">
+                Continue learning <i data-lucide="arrow-right" style="width: 16px;"></i>
+            </a>
+        </div>
+
+        <div class="g-card">
+            <div>
+                <div class="g-card-icon g-card-icon-green">
+                    <i data-lucide="award" style="width: 22px;"></i>
+                </div>
+                <h3 class="g-card-title">Completed Achievements</h3>
+                <p class="g-card-desc">PyTorch Neural Net Badge, Algorithms Practitioner 2026</p>
+            </div>
+            <span style="font-size: 0.85rem; color: var(--g-green-text); font-weight: 500;">2 Badges Earned</span>
+        </div>
+
+        <div class="g-card">
+            <div>
+                <div class="g-card-icon g-card-icon-yellow">
+                    <i data-lucide="code" style="width: 22px;"></i>
+                </div>
+                <h3 class="g-card-title">Projects Portfolio</h3>
+                <p class="g-card-desc">X-FACE Biometric Recognition, Medical Image Diagnostics</p>
+            </div>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">2 Active Deployments</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

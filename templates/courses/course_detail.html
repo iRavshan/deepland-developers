@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} — Deepland Developers{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+    <!-- Course Header Card -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; margin-bottom: 3rem;">
+        <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+            <span class="g-tag g-tag-{{ course.level }}">{{ course.get_level_display }}</span>
+            <span class="google-chip" style="background: #ffffff; cursor: default;">
+                <i data-lucide="folder" style="width: 14px; color: var(--g-blue);"></i> {{ course.category.name }}
+            </span>
+            <span style="color: #f59e0b; font-weight: 600; font-size: 0.9rem;">★ {{ course.rating }}</span>
+        </div>
+
+        <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; line-height: 1.2;">
+            {{ course.title }}
+        </h1>
+        <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 820px; margin-bottom: 2rem; line-height: 1.6;">
+            {{ course.description }}
+        </p>
+
+        <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; font-size: 0.95rem; color: var(--text-secondary);">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="clock" style="color: var(--g-blue); width: 18px;"></i>
+                <span>Duration: <strong>{{ course.duration }}</strong></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="layers" style="color: var(--g-green); width: 18px;"></i>
+                <span>Lessons: <strong>{{ lessons.count }} Lessons</strong></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="award" style="color: var(--g-yellow); width: 18px;"></i>
+                <span>Certificate: <strong>Developer Badge Included</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Syllabus & Content Breakdown -->
+    <div style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 2.5rem;">
+        <div>
+            <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="list-tree" style="color: var(--g-blue); width: 22px;"></i> Course Syllabus & Lessons
+            </h2>
+
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                {% for lesson in lessons %}
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
+                    <div style="display: flex; align-items: center; gap: 1.25rem;">
+                        <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                            {{ lesson.order }}
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Estimated duration: {{ lesson.duration }}</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                        Start Lesson <i data-lucide="arrow-right" style="width: 14px;"></i>
+                    </a>
+                </div>
+                {% empty %}
+                <div style="padding: 2rem; text-align: center; background: var(--bg-surface); border-radius: var(--radius-md); color: var(--text-secondary);">
+                    Lessons for this course are being prepared.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Sidebar Info Panel -->
+        <div>
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; position: sticky; top: 84px;">
+                <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Key Outcomes</h3>
+                
+                <ul style="list-style: none; margin-bottom: 1.75rem;">
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.85rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Hands-on PyTorch & Python code exercises
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.85rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Step-by-step mathematical breakdowns
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.85rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Production deployment patterns
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Uzbek language developer guides
+                    </li>
+                </ul>
+
+                {% if lessons.first %}
+                <a href="{% url 'lesson_detail' course.slug lessons.first.order %}" class="btn-google btn-google-primary" style="width: 100%; padding: 0.75rem 0;">
+                    Start Lesson 1 <i data-lucide="arrow-right" style="width: 16px;"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses Catalog — Deepland Developers{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+    <!-- Catalog Header -->
+    <div style="margin-bottom: 3rem;">
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--g-blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+            Developer Catalog
+        </div>
+        <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+            Courses & Developer Pathways
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 700px;">
+            Explore comprehensive guides and courses designed for Artificial Intelligence, Algorithms, and Python Engineering.
+        </p>
+    </div>
+
+    <!-- Category Filter Chips -->
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+        <a href="{% url 'course_list' %}" class="google-chip {% if not selected_category %}active{% endif %}">
+            All Courses
+        </a>
+        {% for cat in categories %}
+        <a href="?category={{ cat.slug }}" class="google-chip {% if selected_category == cat.slug %}active{% endif %}">
+            {{ cat.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="grid-cards">
+        {% for course in courses %}
+        <div class="g-card">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <span class="g-tag g-tag-{{ course.level }}">{{ course.get_level_display }}</span>
+                    <span style="color: #f59e0b; font-size: 0.85rem; font-weight: 600;">★ {{ course.rating }}</span>
+                </div>
+
+                <h3 class="g-card-title">{{ course.title }}</h3>
+                <p class="g-card-desc">{{ course.description }}</p>
+            </div>
+
+            <div class="g-card-footer">
+                <div style="display: flex; gap: 1rem; color: var(--text-secondary);">
+                    <span><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ course.duration }}</span>
+                    <span><i data-lucide="book-open" style="width: 14px; vertical-align: middle;"></i> {{ course.total_lessons }} Lessons</span>
+                </div>
+                <a href="{% url 'course_detail' course.slug %}" class="btn-google btn-google-primary" style="padding: 0.45rem 1.1rem; font-size: 0.85rem;">
+                    View Course
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: var(--bg-surface); border: 1px dashed var(--border-color); border-radius: var(--radius-lg);">
+            <i data-lucide="search-x" style="width: 48px; height: 48px; color: var(--text-tertiary); margin-bottom: 1rem;"></i>
+            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No courses found</h3>
+            <p style="color: var(--text-secondary);">Try selecting a different category filter above.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

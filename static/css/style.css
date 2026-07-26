@@ -1,0 +1,573 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --g-blue: #1a73e8;
+    --g-blue-hover: #1557b0;
+    --g-blue-bg: #e8f0fe;
+    --g-blue-text: #1967d2;
+    
+    --g-red: #ea4335;
+    --g-red-bg: #fce8e6;
+    --g-red-text: #c5221f;
+
+    --g-yellow: #fbbc04;
+    --g-yellow-bg: #fef7e0;
+    --g-yellow-text: #b06000;
+
+    --g-green: #34a853;
+    --g-green-bg: #e6f4ea;
+    --g-green-text: #137333;
+
+    --bg-main: #ffffff;
+    --bg-surface: #f8f9fa;
+    --bg-dark-surface: #202124;
+    
+    --border-color: #dadce0;
+    --border-subtle: #e8eaed;
+
+    --text-primary: #202124;
+    --text-secondary: #5f6368;
+    --text-tertiary: #80868b;
+    --text-on-dark: #ffffff;
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    --font-heading: 'Open Sans', 'Roboto', system-ui, -apple-system, sans-serif;
+    --font-body: 'Roboto', system-ui, -apple-system, sans-serif;
+    --font-code: 'Roboto Mono', Consolas, monospace;
+
+    --shadow-1: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    --shadow-2: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    --shadow-hover: 0 4px 16px 0 rgba(32, 33, 36, 0.14);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Header & Navbar - Google Developers Style */
+.google-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.google-nav-top {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.google-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.google-logo-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.google-logo-icon span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.g-dot-blue { background: var(--g-blue); }
+.g-dot-red { background: var(--g-red); }
+.g-dot-yellow { background: var(--g-yellow); }
+.g-dot-green { background: var(--g-green); }
+
+.google-brand-title {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+.google-brand-title span {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.google-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+}
+
+.google-nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s, color 0.15s;
+}
+
+.google-nav-item a:hover {
+    background: var(--bg-surface);
+    color: var(--g-blue);
+}
+
+.google-nav-item a.active {
+    color: var(--g-blue);
+    background: var(--g-blue-bg);
+    font-weight: 600;
+}
+
+.google-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.google-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    padding: 0.4rem 1rem;
+    width: 260px;
+    transition: all 0.2s ease;
+}
+
+.google-search-bar:focus-within {
+    background: #ffffff;
+    border-color: var(--g-blue);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+    width: 320px;
+}
+
+.google-search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+/* Buttons - Google Style */
+.btn-google {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.btn-google-primary {
+    background: var(--g-blue);
+    color: #ffffff;
+}
+
+.btn-google-primary:hover {
+    background: var(--g-blue-hover);
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+}
+
+.btn-google-outline {
+    border-color: var(--border-color);
+    color: var(--g-blue);
+    background: #ffffff;
+}
+
+.btn-google-outline:hover {
+    background: var(--g-blue-bg);
+    border-color: var(--g-blue-bg);
+}
+
+.btn-google-text {
+    color: var(--g-blue);
+    background: transparent;
+}
+
+.btn-google-text:hover {
+    background: var(--g-blue-bg);
+}
+
+/* Hero Section */
+.hero-google {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 6rem 0 6rem;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero-title-google {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.hero-desc-google {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Google Cards */
+.g-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+}
+
+.g-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: transparent;
+    transform: translateY(-2px);
+}
+
+.g-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.g-card-icon-blue { background: var(--g-blue-bg); color: var(--g-blue-text); }
+.g-card-icon-green { background: var(--g-green-bg); color: var(--g-green-text); }
+.g-card-icon-red { background: var(--g-red-bg); color: var(--g-red-text); }
+.g-card-icon-yellow { background: var(--g-yellow-bg); color: var(--g-yellow-text); }
+
+.g-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.g-card-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+}
+
+.g-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+}
+
+.g-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.g-tag-beginner { background: var(--g-green-bg); color: var(--g-green-text); }
+.g-tag-intermediate { background: var(--g-blue-bg); color: var(--g-blue-text); }
+.g-tag-advanced { background: var(--g-red-bg); color: var(--g-red-text); }
+
+/* Grid Layouts */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+/* Documentation Layout (for Lesson Detail) */
+.doc-wrapper {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 120px);
+}
+
+.doc-sidebar {
+    background: #ffffff;
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem 1rem;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+}
+
+.doc-sidebar-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+.doc-nav-list {
+    list-style: none;
+}
+
+.doc-nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 0 var(--radius-full) var(--radius-full) 0;
+    transition: all 0.15s ease;
+    margin-bottom: 2px;
+}
+
+.doc-nav-item a:hover {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+}
+
+.doc-nav-item a.active {
+    background: var(--g-blue-bg);
+    color: var(--g-blue-text);
+    font-weight: 600;
+}
+
+.doc-content {
+    padding: 2.5rem 3.5rem;
+    max-width: 920px;
+}
+
+.doc-article h1 {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.doc-article h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.doc-article p {
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+/* Callout Boxes - Google Developer Style */
+.google-callout {
+    background: var(--g-blue-bg);
+    border-left: 4px solid var(--g-blue);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    color: #174ea6;
+    font-size: 0.95rem;
+}
+
+.google-callout-title {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Code Boxes */
+.google-code-box {
+    background: var(--bg-dark-surface);
+    color: #e8eaed;
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.google-code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.8rem;
+    color: #9aa0a6;
+}
+
+/* Footer - Google Developers */
+.google-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 0 2rem;
+    margin-top: auto;
+}
+
+.google-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.google-footer-col h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.google-footer-col ul {
+    list-style: none;
+}
+
+.google-footer-col a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 2;
+    transition: color 0.15s;
+}
+
+.google-footer-col a:hover {
+    color: var(--g-blue);
+}
+
+.google-footer-bottom {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+}
+
+/* Forms - Google Account Style */
+.google-auth-card {
+    max-width: 440px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(60,64,67,0.12);
+}
+
+.google-form-group {
+    margin-bottom: 1.25rem;
+}
+
+.google-form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+}
+
+.google-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.google-input:focus {
+    border-color: var(--g-blue);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+/* Responsiveness */
+@media (max-width: 860px) {
+    .doc-wrapper { grid-template-columns: 1fr; }
+    .doc-sidebar { display: none; }
+    .doc-content { padding: 1.5rem; }
+    .hero-title-google { font-size: 2.2rem; }
+}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Deepland Developers — AI & Engineering Pathways{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-google">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title-google">
+                Build the future of technology with <span style="color: var(--g-blue);">Deepland AI</span>
+            </h1>
+            <p class="hero-desc-google">
+                Access interactive courses, developer guides, and production-ready computer vision & deep learning implementations.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="{% url 'course_list' %}" class="btn-google btn-google-primary" style="padding: 0.75rem 1.75rem; font-size: 1rem;">
+                    Browse Courses <i data-lucide="arrow-right" style="width: 18px;"></i>
+                </a>
+                <a href="{% url 'course_detail' 'deep-learning-fundamentals' %}" class="btn-google btn-google-outline" style="padding: 0.75rem 1.75rem; font-size: 1rem;">
+                    Learning Guide
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container" style="padding-top: 5rem; padding-bottom: 5rem;">
+    <!-- Technology Pathways -->
+    <div style="margin-bottom: 8.5rem;">
+        <div style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 600; color: var(--text-primary);">Developer Pathways</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">Structured learning tracks curated for software engineers and AI practitioners.</p>
+        </div>
+
+        <div class="grid-cards">
+            {% for cat in categories %}
+            <a href="{% url 'course_list' %}?category={{ cat.slug }}" class="g-card">
+                <div>
+                    <div class="g-card-icon {% if forloop.counter == 1 %}g-card-icon-blue{% elif forloop.counter == 2 %}g-card-icon-green{% elif forloop.counter == 3 %}g-card-icon-yellow{% else %}g-card-icon-red{% endif %}">
+                        <i data-lucide="{{ cat.icon }}" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <h3 class="g-card-title">{{ cat.name }}</h3>
+                    <p class="g-card-desc">{{ cat.description }}</p>
+                </div>
+                <div class="g-card-footer">
+                    <span style="color: var(--g-blue); font-weight: 500; display: flex; align-items: center; gap: 0.3rem;">
+                        Explore Track <i data-lucide="chevron-right" style="width: 16px;"></i>
+                    </span>
+                    <span>{{ cat.courses.count }} Courses</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Featured Courses Grid -->
+    <div style="margin-bottom: 8.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem;">
+            <div>
+                <h2 style="font-size: 1.75rem; font-weight: 600; color: var(--text-primary);">Featured Developer Courses</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Hands-on darslar, code implementations va real-world architectures.</p>
+            </div>
+            <a href="{% url 'course_list' %}" class="btn-google btn-google-text">
+                View all courses <i data-lucide="arrow-right" style="width: 16px;"></i>
+            </a>
+        </div>
+
+        <div class="grid-cards">
+            {% for course in featured_courses %}
+            <div class="g-card">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <span class="g-tag g-tag-{{ course.level }}">{{ course.get_level_display }}</span>
+                        <span style="color: #f59e0b; font-weight: 600; font-size: 0.85rem;">★ {{ course.rating }}</span>
+                    </div>
+
+                    <h3 class="g-card-title">{{ course.title }}</h3>
+                    <p class="g-card-desc">{{ course.description }}</p>
+                </div>
+
+                <div class="g-card-footer">
+                    <div style="display: flex; gap: 1rem; color: var(--text-secondary);">
+                        <span><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ course.duration }}</span>
+                        <span><i data-lucide="play-circle" style="width: 14px; vertical-align: middle;"></i> {{ course.total_lessons }} lessons</span>
+                    </div>
+                    <a href="{% url 'course_detail' course.slug %}" class="btn-google btn-google-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                        Start Course
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Featured Projects Showcase Section -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 3rem; margin-top: 2rem;">
+        <div style="max-width: 700px; margin-bottom: 2rem;">
+            <div style="color: var(--g-blue); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                Real-world Implementations
+            </div>
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+                Built on Deepland: X-FACE & S.I.T Projects
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1rem;">
+                Learn how regional award-winning projects were architected using modern Computer Vision and Diagnostic Neural Networks.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem;">
+                <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i data-lucide="scan-face" style="width: 22px;"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">X-FACE Recognition System</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem;">
+                    Regional award-winning biometric computer vision architecture (2022) with real-time face detection & embedding matching.
+                </p>
+                <a href="{% url 'course_detail' 'computer-vision-xface' %}" style="color: var(--g-blue); font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem;">
+                    View Case Study <i data-lucide="arrow-right" style="width: 16px;"></i>
+                </a>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem;">
+                <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--g-green-bg); color: var(--g-green-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <i data-lucide="activity" style="width: 22px;"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">S.I.T Healthcare AI Tool</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem;">
+                    Convolutional Neural Network model for X-ray & MRI medical image diagnostic support (2023).
+                </p>
+                <a href="{% url 'course_detail' 'deep-learning-fundamentals' %}" style="color: var(--g-blue); font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem;">
+                    Explore Architecture <i data-lucide="arrow-right" style="width: 16px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Deepland Developers — Build with AI & Engineering{% endblock %}</title>
+    <meta name="description" content="Deepland Developers platform - Learn Artificial Intelligence, Machine Learning, and Computer Science with hands-on guides.">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- Google Developers Header -->
+    <header class="google-header">
+        <div class="container">
+            <div class="google-nav-top">
+                <a href="{% url 'home' %}" class="google-brand">
+                    <div class="google-logo-icon">
+                        <span class="g-dot-blue"></span>
+                        <span class="g-dot-red"></span>
+                        <span class="g-dot-yellow"></span>
+                        <span class="g-dot-green"></span>
+                    </div>
+                    <div class="google-brand-title">Deepland <span>Developers</span></div>
+                </a>
+
+                <ul class="google-nav-links">
+                    <li class="google-nav-item">
+                        <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                            <i data-lucide="layout-dashboard" style="width:16px;"></i> Overview
+                        </a>
+                    </li>
+                    <li class="google-nav-item">
+                        <a href="{% url 'course_list' %}" class="{% if request.resolver_match.url_name == 'course_list' or request.resolver_match.url_name == 'course_detail' %}active{% endif %}">
+                            <i data-lucide="book-open-check" style="width:16px;"></i> Courses
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="google-nav-right">
+                    <div class="google-search-bar">
+                        <i data-lucide="search" style="width: 16px; color: var(--text-tertiary);"></i>
+                        <input type="text" class="google-search-input" placeholder="Search courses, AI topics...">
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="btn-google btn-google-outline">
+                            <i data-lucide="user" style="width: 16px;"></i> {{ user.username }}
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn-google btn-google-text" title="Sign out">
+                            <i data-lucide="log-out" style="width: 16px;"></i>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn-google btn-google-text">Sign in</a>
+                        <a href="{% url 'signup' %}" class="btn-google btn-google-primary">Get started</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main style="flex: 1;">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Google Developers Footer -->
+    <footer class="google-footer">
+        <div class="container">
+            <div class="google-footer-grid">
+                <div class="google-footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://github.com/iRavshan" target="_blank">GitHub Repository</a></li>
+                        <li><a href="#">Developer Blog</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                    </ul>
+                </div>
+
+                <div class="google-footer-col">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="{% url 'course_list' %}">AI Developer Pathways</a></li>
+                        <li><a href="{% url 'course_list' %}">Computer Vision X-FACE</a></li>
+                        <li><a href="{% url 'course_list' %}">Python Engineering</a></li>
+                    </ul>
+                </div>
+
+                <div class="google-footer-col">
+                    <h4>Developer Support</h4>
+                    <ul>
+                        <li><a href="/llms.txt">llms.txt Specification</a></li>
+                        <li><a href="/humans.txt">humans.txt Credits</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div class="google-footer-col">
+                    <h4>Deepland Team</h4>
+                    <ul>
+                        <li><span style="color: var(--text-secondary); font-size: 0.85rem;">Founder: Ravshan Sodiqov</span></li>
+                        <li><span style="color: var(--text-secondary); font-size: 0.85rem;">CTO: Botirxonov Faxriyorjon</span></li>
+                        <li><span style="color: var(--text-secondary); font-size: 0.85rem;">Location: Karshi, Uzbekistan</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="google-footer-bottom">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div class="google-logo-icon">
+                        <span class="g-dot-blue"></span>
+                        <span class="g-dot-red"></span>
+                        <span class="g-dot-yellow"></span>
+                        <span class="g-dot-green"></span>
+                    </div>
+                    <span>Deepland Developers &copy; 2026</span>
+                </div>
+                <div>
+                    <a href="#" style="color: var(--text-tertiary); text-decoration: none; margin-left: 1.5rem;">Terms</a>
+                    <a href="#" style="color: var(--text-tertiary); text-decoration: none; margin-left: 1.5rem;">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
