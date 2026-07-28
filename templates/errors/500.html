@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Serverda xatolik (500) — Deepland Dasturchilari{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 6rem 2rem;">
+    <h1 style="font-size: 5rem; font-weight: 700; color: var(--g-red); margin-bottom: 1rem;">500</h1>
+    <h2 style="font-size: 1.75rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">Serverda ichki xatolik yuz berdi</h2>
+    <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 2rem auto;">Biz ushbu muammoni hal qilish ustida ishlayapmiz. Iltimos, birozdan so'ng qaytadan urinib ko'ring.</p>
+    <a href="{% url 'home' %}" class="btn-google btn-google-primary">
+        Bosh sahifaga qaytish
+    </a>
+</div>
+{% endblock %}

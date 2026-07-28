@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+
+{% block title %}O'quv qo'llanmasi & Dasturchi Yo'l Xaritasi (Roadmap) — Deepland Dasturchilari{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 6rem;">
+
+    <!-- Hero Header -->
+    <div style="background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 3.5rem 3rem; margin-bottom: 4rem; position: relative; overflow: hidden; box-shadow: var(--shadow-2);">
+        <div style="max-width: 800px; position: relative; z-index: 2;">
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.15); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.25rem; backdrop-filter: blur(4px);">
+                <i data-lucide="compass" style="width: 16px;"></i> Qo'llanma & Roadmap
+            </div>
+            <h1 style="font-size: 2.75rem; font-weight: 700; line-height: 1.25; margin-bottom: 1.25rem;">
+                Qayerdan va nimadan boshlashni bilmayapsizmi?
+            </h1>
+            <p style="font-size: 1.15rem; opacity: 0.92; line-height: 1.7; margin-bottom: 2rem;">
+                Sun'iy intellekt, Mashinali o'rgatish va Dasturlash sohasiga noldan kirib kelayotgan dasturchilar uchun tuzilgan bosqichma-bosqich yo'riqnoma va kurslar xaritasi.
+            </p>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="#ai-engineer-roadmap" class="btn-google" style="background: #ffffff; color: var(--g-blue); font-weight: 600; padding: 0.75rem 1.5rem;">
+                    AI Yo'l xaritasini ko'rish <i data-lucide="arrow-down" style="width: 18px;"></i>
+                </a>
+                <a href="#course-breakdown" class="btn-google" style="background: rgba(255,255,255,0.15); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); font-weight: 500; padding: 0.75rem 1.5rem;">
+                    Kurslar qamrovi bilan tanishish
+                </a>
+            </div>
+        </div>
+
+        <!-- Decorative background shapes -->
+        <div style="position: absolute; right: -50px; bottom: -50px; width: 320px; height: 320px; background: rgba(255,255,255,0.06); border-radius: 50%; pointer-events: none;"></div>
+        <div style="position: absolute; right: 120px; top: -60px; width: 220px; height: 220px; background: rgba(255,255,255,0.04); border-radius: 50%; pointer-events: none;"></div>
+    </div>
+
+    <!-- Quick Level Filter / Guidance Cards -->
+    <div style="margin-bottom: 5rem;">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto;">
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+                Darajangizga mos yo'nalishni tanlang
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1rem;">
+                Platformamizdagi barcha kurslar bir-biri bilan mantiqiy bog'langan. O'z tajribangizga qarab mos bosqichdan boshlang.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <!-- Beginner Card -->
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; border-top: 4px solid var(--g-green); box-shadow: var(--shadow-1);">
+                <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--g-green-bg); color: var(--g-green-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+                    <i data-lucide="sprout" style="width: 24px;"></i>
+                </div>
+                <span class="g-tag g-tag-beginner" style="margin-bottom: 0.75rem; display: inline-block;">Boshlang'ich (Beginner)</span>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Dasturlashda noldan boshlayotganlar</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                    Agar siz dasturlashni endi boshlayotgan bo'lsangiz yoki Sintaksis hamda Mantiqiy fikrlashni mustahkamlamoqchi bo'lsangiz.
+                </p>
+                <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Tavsiya etiladigan birinchi kurs:</div>
+                <a href="{% url 'course_detail' 'python-for-data-science' %}" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--g-blue); font-weight: 500; border: 1px solid var(--border-subtle);">
+                    <span>Python for AI & Data Science</span>
+                    <i data-lucide="chevron-right" style="width: 16px;"></i>
+                </a>
+            </div>
+
+            <!-- Intermediate Card -->
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; border-top: 4px solid var(--g-blue); box-shadow: var(--shadow-1);">
+                <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+                    <i data-lucide="code-2" style="width: 24px;"></i>
+                </div>
+                <span class="g-tag g-tag-intermediate" style="margin-bottom: 0.75rem; display: inline-block;">O'rta (Intermediate)</span>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Algoritm va AI asoslarini biltuvchilar</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                    Python-ni bilesiz va endi Sun'iy Intellekt, Neyron tarmoqlari (PyTorch) va Ma'lumotlar Tuzilmasiga o'tmoqchimisiz?
+                </p>
+                <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Tavsiya etiladigan birinchi kurs:</div>
+                <a href="{% url 'course_detail' 'deep-learning-fundamentals' %}" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--g-blue); font-weight: 500; border: 1px solid var(--border-subtle);">
+                    <span>Chuqur O'rgatish Asoslari (PyTorch)</span>
+                    <i data-lucide="chevron-right" style="width: 16px;"></i>
+                </a>
+            </div>
+
+            <!-- Advanced Card -->
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; border-top: 4px solid var(--g-red); box-shadow: var(--shadow-1);">
+                <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--g-red-bg); color: var(--g-red-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;">
+                    <i data-lucide="cpu" style="width: 24px;"></i>
+                </div>
+                <span class="g-tag g-tag-advanced" style="margin-bottom: 0.75rem; display: inline-block;">Yuqori (Advanced)</span>
+                <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Amaliy Loyihalar & Biometriya</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                    Mukammal Kompyuteriy Ko'rish (Computer Vision) hamda Real vaqt rejimida ishlaydigan biometrik tizimlar (X-FACE).
+                </p>
+                <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Tavsiya etiladigan birinchi kurs:</div>
+                <a href="{% url 'course_detail' 'computer-vision-xface' %}" style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--g-blue); font-weight: 500; border: 1px solid var(--border-subtle);">
+                    <span>Computer Vision: X-FACE Project</span>
+                    <i data-lucide="chevron-right" style="width: 16px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ROADMAP SECTION -->
+    <div id="ai-engineer-roadmap" style="margin-bottom: 6rem; scroll-margin-top: 100px;">
+        <div style="margin-bottom: 3rem;">
+            <div style="color: var(--g-blue); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                Bosqichma-bosqich Tizim
+            </div>
+            <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+                AI & Software Engineer Yo'l Xaritasi (Roadmap)
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 750px;">
+                Ushbu tartibda o'rganish sizga nazariy va amaliy bilimlarni eng samarali tarzda o'zlashtirish imkonini beradi.
+            </p>
+        </div>
+
+        <!-- Vertical Timeline Steps -->
+        <div style="display: flex; flex-direction: column; gap: 2rem; position: relative;">
+            
+            <!-- Timeline connector line -->
+            <div style="position: absolute; left: 27px; top: 40px; bottom: 40px; width: 4px; background: linear-gradient(to bottom, var(--g-blue), var(--g-green), var(--g-yellow), var(--g-red)); z-index: 1;"></div>
+
+            <!-- Step 1 -->
+            <div style="display: flex; gap: 1.75rem; position: relative; z-index: 2;">
+                <div style="width: 58px; height: 58px; border-radius: var(--radius-full); background: var(--g-blue); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 0 0 6px #ffffff, var(--shadow-1);">
+                    1
+                </div>
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; flex: 1; box-shadow: var(--shadow-1);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <span style="color: var(--g-blue); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">1-Bosqich: Poydevor</span>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">Python va Ma'lumotlar Ilmi Muhandisligi</h3>
+                        </div>
+                        <span class="g-tag g-tag-beginner">Boshlang'ich • 10 Soat</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.6;">
+                        Har qanday Sun'iy Intellekt va Neyron tarmoqlari muhandisi avvalo Python va ma'lumotlar bilan ishlash kutubxonalarini mukammal egallashi shart. Ushbu bosqichda siz matritsalar algebrasi va ma'lumotlarni tahlil qilishni o'rganasiz.
+                    </p>
+                    <div style="background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                        <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 0.5rem;">Ushbu bosqichda nimani o'rganasiz:</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            <div>• Python sintaksisi va strukturasi</div>
+                            <div>• NumPy bilan vektorlashtirish</div>
+                            <div>• Pandas bilan DataFrame boshqaruvi</div>
+                            <div>• Vizuallashtirish va tahlil</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'course_detail' 'python-for-data-science' %}" class="btn-google btn-google-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">
+                        1-Bosqich kursini boshlash <i data-lucide="arrow-right" style="width: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div style="display: flex; gap: 1.75rem; position: relative; z-index: 2;">
+                <div style="width: 58px; height: 58px; border-radius: var(--radius-full); background: var(--g-green); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 0 0 6px #ffffff, var(--shadow-1);">
+                    2
+                </div>
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; flex: 1; box-shadow: var(--shadow-1);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <span style="color: var(--g-green); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">2-Bosqich: Algoritmik Mantiq</span>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">Ma'lumotlar Tuzilmasi va Algoritmlar (DSA)</h3>
+                        </div>
+                        <span class="g-tag g-tag-beginner">Boshlang'ich/O'rta • 20 Soat</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.6;">
+                        Tizimlarning tezligi va samaradorligi algoritmlarga bog'liq. Ushbu bosqichda Big-O murakkabligi, Daraxtlar, Graflar va Dinamik Dasturlash tushunchalarini o'rganib, mantiqiy fikrlashni yangi darajaga olib chiqasiz.
+                    </p>
+                    <div style="background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                        <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 0.5rem;">Ushbu bosqichda nimani o'rganasiz:</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            <div>• Big-O vaqt va xotira baholash</div>
+                            <div>• Massiv va Bog'langan ro'yxatlar</div>
+                            <div>• Daraxt va Graf algoritmlari</div>
+                            <div>• Dinamik dasturlash (DP)</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'course_detail' 'dsa-masterclass' %}" class="btn-google btn-google-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">
+                        2-Bosqich kursini boshlash <i data-lucide="arrow-right" style="width: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div style="display: flex; gap: 1.75rem; position: relative; z-index: 2;">
+                <div style="width: 58px; height: 58px; border-radius: var(--radius-full); background: var(--g-yellow); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 0 0 6px #ffffff, var(--shadow-1);">
+                    3
+                </div>
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; flex: 1; box-shadow: var(--shadow-1);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <span style="color: var(--g-yellow-text); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">3-Bosqich: Neyron Tarmoqlari</span>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">Chuqur O'rgatish va Neyron Tarmoqlari Asoslari</h3>
+                        </div>
+                        <span class="g-tag g-tag-intermediate">O'rta • 14 Soat</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.6;">
+                        Sun'iy Intellektning yuragi bo'lgan Neyron Tarmoqlari va PyTorch freymvorkini o'rganasiz. Pertseptronlardan tortib Backpropagation, Gradient tushishi va Model tayyorlashgacha bo'lgan barcha matematik tamoyillar amalda tushuntiriladi.
+                    </p>
+                    <div style="background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                        <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 0.5rem;">Ushbu bosqichda nimani o'rganasiz:</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            <div>• Biologik vs Sun'iy Neyronlar</div>
+                            <div>• ReLU, Sigmoid, Softmax aktivatsiya</div>
+                            <div>• PyTorch torch.nn arxitekturasi</div>
+                            <div>• Regularizatsiya va Dropout</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'course_detail' 'deep-learning-fundamentals' %}" class="btn-google btn-google-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">
+                        3-Bosqich kursini boshlash <i data-lucide="arrow-right" style="width: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div style="display: flex; gap: 1.75rem; position: relative; z-index: 2;">
+                <div style="width: 58px; height: 58px; border-radius: var(--radius-full); background: var(--g-red); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 0 0 6px #ffffff, var(--shadow-1);">
+                    4
+                </div>
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; flex: 1; box-shadow: var(--shadow-1);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <span style="color: var(--g-red); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">4-Bosqich: Amaliy Loyihalar & Ishlab Chiqarish</span>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">Kompyuteriy Ko'rish & Biometriya: X-FACE Project</h3>
+                        </div>
+                        <span class="g-tag g-tag-advanced">Yuqori • 12 Soat</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.6;">
+                        Nazariyani real ishlab chiqarishga (Production) o'tkazish bosqichi! Mukofotga sazovor bo'lgan X-FACE yuzni aniqlash va biometrik kompyuteriy ko'rish tizimi misolida to'liq loyihani noldan yakunigacha qurasiz.
+                    </p>
+                    <div style="background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                        <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 0.5rem;">Ushbu bosqichda nimani o'rganasiz:</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            <div>• CNN va Konvolyutsiya qatlamlari</div>
+                            <div>• OpenCV tasvirlarga ishlov berish</div>
+                            <div>• Yuzni aniqlash & Embeddinglar</div>
+                            <div>• Modelni serverga deploy qilish</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'course_detail' 'computer-vision-xface' %}" class="btn-google btn-google-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">
+                        4-Bosqich kursini boshlash <i data-lucide="arrow-right" style="width: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- DETAILED COURSE BREAKDOWN SECTION -->
+    <div id="course-breakdown" style="margin-bottom: 6rem; scroll-margin-top: 100px;">
+        <div style="margin-bottom: 3rem;">
+            <div style="color: var(--g-green); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                Kurslar Tahlili
+            </div>
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+                Har bir kurs nimalarni o'z ichiga oladi?
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 1rem;">
+                Kurslarning har biri aniq maqsadga yo'naltirilgan va amaliy kod yozishga asoslangan.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;">
+            {% for course in courses %}
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-1);" class="g-card-hover-mini">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <span class="g-tag g-tag-{{ course.level }}">{{ course.get_level_display }}</span>
+                        <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;">
+                            <i data-lucide="clock" style="width: 14px; vertical-align: middle; color: var(--g-blue);"></i> {{ course.duration }}
+                        </span>
+                    </div>
+
+                    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+                        {{ course.title }}
+                    </h3>
+
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                        {{ course.description }}
+                    </p>
+
+                    <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+                            <i data-lucide="check-circle" style="width: 14px; color: var(--g-green); vertical-align: middle;"></i> Darslar soni:
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                            Ushbu kursda <strong>{{ course.total_lessons }} ta</strong> mukammal amaliy dars mavjud.
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{% url 'course_detail' course.slug %}" class="btn-google btn-google-outline" style="width: 100%; text-align: center; font-size: 0.9rem;">
+                    Kurs dasturini ko'rish <i data-lucide="arrow-right" style="width: 16px;"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- FAQ SECTION FOR BEGINNERS -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 3.5rem; margin-top: 2rem;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 3rem auto;">
+            <div style="color: var(--g-yellow-text); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+                Savol-Javoblar
+            </div>
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
+                Ko'p beriladigan savollar
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                O'rganish jarayonini boshlashdan oldin paydo bo'ladigan eng muhim savollarga javoblar.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="help-circle" style="color: var(--g-blue); width: 18px;"></i> Sun'iy intellekt uchun matematikani bilish shartmi?
+                </h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                    Boshlang'ich va o'rta bosqich uchun oliy matematika shart emas. Kurslarimizda barcha zaruriy matematik tushunchalar (Chiziqli algebra va Differentsiallash) amaliy misollar bilan sodda tushuntirib berilgan.
+                </p>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="help-circle" style="color: var(--g-green); width: 18px;"></i> Kurslarni tugatish uchun qancha vaqt ketadi?
+                </h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                    Har kuni 1-2 soatdan vaqt ajratsangiz, 1 oydan 3 oygacha bo'lgan muddatda barcha 4 bosqichni to'liq yakunlab, o'z amaliy loyihangizni yaratishingiz mumkin.
+                </p>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="help-circle" style="color: var(--g-yellow-text); width: 18px;"></i> Amaliy loyihalar yaratamanmi?
+                </h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                    Ha! Platformamizda nazariya 20%, amaliyot esa 80% ni tashkil qiladi. X-FACE yuzni tanish tizimi kabi real loyihalarni noldan yaratib, portfoliosingizga qo'shasiz.
+                </p>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="help-circle" style="color: var(--g-red); width: 18px;"></i> Qanday yordam yoki maslahat olishim mumkin?
+                </h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                    Savollaringiz bo'lsa, platformadagi munozara va darslar munozaralaridan hamda GitHub resurslarimizdan foydalanishingiz mumkin.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

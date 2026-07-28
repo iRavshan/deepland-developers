@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from mdeditor.fields import MDTextField
 
 class Category(models.Model):
@@ -71,3 +72,34 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f"{self.course.title} - {self.title}"
+
+
+class LessonCompletion(models.Model):
+    """Foydalanuvchi qaysi darsni tugatganini kuzatish uchun."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='completed_lessons')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='completions')
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'lesson']
+        verbose_name = "Tugatilgan dars"
+        verbose_name_plural = "Tugatilgan darslar"
+
+    def __str__(self):
+        return f"{self.user.username} — {self.lesson.title}"
+
+class LessonFeedback(models.Model):
+    """Foydalanuvchilar darslarga bergan baholari (layk yoki dizlayk)"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lesson_feedbacks')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='feedbacks')
+    is_helpful = models.BooleanField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['user', 'lesson']
+        verbose_name = "Darsga bildirilgan fikr"
+        verbose_name_plural = "Darsga bildirilgan fikrlar"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.lesson.title} ({'Foydali' if self.is_helpful else 'Foydasiz'})"

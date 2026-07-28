@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ course.title }} — Deepland Developers{% endblock %}
+{% block title %}{{ course.title }} — Deepland Dasturchilari{% endblock %}
 
 {% block content %}
 <div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
@@ -11,7 +11,6 @@
             <span class="google-chip" style="background: #ffffff; cursor: default;">
                 <i data-lucide="folder" style="width: 14px; color: var(--g-blue);"></i> {{ course.category.name }}
             </span>
-            <span style="color: #f59e0b; font-weight: 600; font-size: 0.9rem;">★ {{ course.rating }}</span>
         </div>
 
         <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; line-height: 1.2;">
@@ -24,45 +23,119 @@
         <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; font-size: 0.95rem; color: var(--text-secondary);">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <i data-lucide="clock" style="color: var(--g-blue); width: 18px;"></i>
-                <span>Duration: <strong>{{ course.duration }}</strong></span>
+                <span>Davomiyligi: <strong>{{ course.duration }}</strong></span>
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <i data-lucide="layers" style="color: var(--g-green); width: 18px;"></i>
-                <span>Lessons: <strong>{{ lessons.count }} Lessons</strong></span>
+                <span>Darslar: <strong>{{ lessons.count }} dars</strong></span>
             </div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <i data-lucide="award" style="color: var(--g-yellow); width: 18px;"></i>
-                <span>Certificate: <strong>Developer Badge Included</strong></span>
+                <span>Sertifikat: <strong>Dasturchi nishoni beriladi</strong></span>
             </div>
         </div>
+
+        {% if user.is_authenticated and lessons.count > 0 %}
+        <!-- Progress bar -->
+        <div style="margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">
+                    <i data-lucide="bar-chart-3" style="width: 15px; vertical-align: middle; color: var(--g-green);"></i>
+                    O'quv jarayoni
+                </span>
+                <span style="font-size: 0.85rem; font-weight: 600; color: var(--g-green);">
+                    {{ completed_lesson_ids|length }} / {{ lessons.count }}
+                </span>
+            </div>
+            <div style="height: 8px; background: var(--border-subtle); border-radius: var(--radius-full); overflow: hidden;">
+                {% widthratio completed_lesson_ids|length lessons.count 100 as pct %}
+                <div style="height: 100%; width: {% widthratio completed_lesson_ids|length lessons.count 100 %}%; background: linear-gradient(90deg, var(--g-green), #2e7d32); border-radius: var(--radius-full); transition: width 0.5s ease;"></div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Syllabus & Content Breakdown -->
     <div style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 2.5rem;">
         <div>
             <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i data-lucide="list-tree" style="color: var(--g-blue); width: 22px;"></i> Course Syllabus & Lessons
+                <i data-lucide="list-tree" style="color: var(--g-blue); width: 22px;"></i> Kurs rejasi
             </h2>
 
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                {% for lesson in lessons %}
-                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
-                    <div style="display: flex; align-items: center; gap: 1.25rem;">
-                        <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
-                            {{ lesson.order }}
+            <div style="display: flex; flex-direction: column; gap: 0.75rem">
+                {% for unit in course.units.all %}
+                <details class="unit-accordion" open>
+                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.2s ease;">
+                        <div style="display: flex; flex-direction: column;">
+                            <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                                {{ unit.title }}
+                            </h3>
+                            {% if unit.description %}
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem; margin-bottom: 0;">{{ unit.description }}</p>
+                            {% endif %}
                         </div>
-                        <div>
-                            <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Estimated duration: {{ lesson.duration }}</p>
+                        <div class="accordion-icons" style="color: var(--text-tertiary); display: flex; align-items: center;">
+                            <i data-lucide="chevron-right" style="width: 20px;" class="icon-closed"></i>
+                            <i data-lucide="chevron-down" style="width: 20px;" class="icon-open"></i>
                         </div>
+                    </summary>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; padding-left: 0.5rem;">
+                        {% for lesson in unit.lessons.all %}
+                        {% if lesson.id in completed_lesson_ids %}
+                        <div style="background: #ffffff; border: 1px solid var(--g-green); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
+                            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                                <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-green); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                                    <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
+                                    <p style="font-size: 0.85rem; color: var(--g-green); font-weight: 500;">
+                                        <i data-lucide="circle-check" style="width: 13px; vertical-align: middle;"></i> Tugatildi · {{ lesson.duration }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                    Qayta ko'rish
+                                </a>
+                                {% if user.is_authenticated %}
+                                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="redirect_to" value="{% url 'course_detail' course.slug %}">
+                                    <button type="submit" class="btn-google" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: var(--text-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-full); cursor: pointer; background: transparent;" title="Bekor qilish">
+                                        <i data-lucide="x" style="width: 14px;"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
+                            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                                <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                                    {{ lesson.order }}
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Taxminiy vaqt: {{ lesson.duration }}</p>
+                                </div>
+                            </div>
+                            <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                Darsni boshlash <i data-lucide="arrow-right" style="width: 14px;"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% empty %}
+                        <div style="padding: 2rem; text-align: center; background: var(--bg-surface); border-radius: var(--radius-md); color: var(--text-secondary);">
+                            Ushbu modul uchun darslar tayyorlanmoqda.
+                        </div>
+                        {% endfor %}
                     </div>
-                    <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
-                        Start Lesson <i data-lucide="arrow-right" style="width: 14px;"></i>
-                    </a>
-                </div>
+                </details>
                 {% empty %}
                 <div style="padding: 2rem; text-align: center; background: var(--bg-surface); border-radius: var(--radius-md); color: var(--text-secondary);">
-                    Lessons for this course are being prepared.
+                    Ushbu kurs uchun darslar tayyorlanmoqda.
                 </div>
                 {% endfor %}
             </div>
@@ -71,26 +144,26 @@
         <!-- Sidebar Info Panel -->
         <div>
             <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; position: sticky; top: 84px;">
-                <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Key Outcomes</h3>
+                <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">Asosiy natijalar</h3>
                 
                 <ul style="list-style: none; margin-bottom: 1.75rem;">
                     <li style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.85rem; font-size: 0.9rem; color: var(--text-secondary);">
-                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Hands-on PyTorch & Python code exercises
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> PyTorch va Python bo'yicha amaliy kod mashqlari
                     </li>
                     <li style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.85rem; font-size: 0.9rem; color: var(--text-secondary);">
-                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Step-by-step mathematical breakdowns
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Bosqichma-bosqich matematik tushuntirishlar
                     </li>
                     <li style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.85rem; font-size: 0.9rem; color: var(--text-secondary);">
-                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Production deployment patterns
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Ishlab chiqarishga joriy etish usullari
                     </li>
                     <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: var(--text-secondary);">
-                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> Uzbek language developer guides
+                        <i data-lucide="check-circle-2" style="color: var(--g-green); width: 18px; flex-shrink: 0;"></i> O'zbek tilidagi dasturchilar uchun qo'llanmalar
                     </li>
                 </ul>
 
                 {% if lessons.first %}
                 <a href="{% url 'lesson_detail' course.slug lessons.first.order %}" class="btn-google btn-google-primary" style="width: 100%; padding: 0.75rem 0;">
-                    Start Lesson 1 <i data-lucide="arrow-right" style="width: 16px;"></i>
+                    1-darsni boshlash <i data-lucide="arrow-right" style="width: 16px;"></i>
                 </a>
                 {% endif %}
             </div>

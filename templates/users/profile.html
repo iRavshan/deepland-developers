@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Developer Profile — {{ user.username }}{% endblock %}
+{% block title %}Dasturchi profili — {{ user.username }}{% endblock %}
 
 {% block content %}
 <div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
@@ -16,8 +16,8 @@
             <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0.75rem;">@{{ user.username }} • {{ profile.bio }}</p>
 
             <div style="display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
-                <span><i data-lucide="award" style="color: var(--g-blue); width: 16px; vertical-align: middle;"></i> Badge: <strong>Google Developer Expert</strong></span>
-                <span><i data-lucide="check-circle" style="color: var(--g-green); width: 16px; vertical-align: middle;"></i> Status: <strong>Active Engineer</strong></span>
+                <span><i data-lucide="award" style="color: var(--g-blue); width: 16px; vertical-align: middle;"></i> Nishon: <strong>Google Developer Expert</strong></span>
+                <span><i data-lucide="check-circle" style="color: var(--g-green); width: 16px; vertical-align: middle;"></i> Holat: <strong>Faol muhandis</strong></span>
             </div>
         </div>
     </div>
@@ -29,11 +29,11 @@
                 <div class="g-card-icon g-card-icon-blue">
                     <i data-lucide="book-open" style="width: 22px;"></i>
                 </div>
-                <h3 class="g-card-title">Enrolled Courses</h3>
-                <p class="g-card-desc">Deep Learning & Neural Networks Fundamentals, DSA Masterclass</p>
+                <h3 class="g-card-title">A'zo bo'lingan kurslar</h3>
+                <p class="g-card-desc">Chuqur o'rgatish va Neyron tarmoqlari asoslari, Ma'lumotlar tuzilmasi va Algoritmlar</p>
             </div>
             <a href="{% url 'course_list' %}" class="btn-google btn-google-text" style="align-self: flex-start; padding-left: 0;">
-                Continue learning <i data-lucide="arrow-right" style="width: 16px;"></i>
+                O'rganishni davom ettirish <i data-lucide="arrow-right" style="width: 16px;"></i>
             </a>
         </div>
 
@@ -42,10 +42,10 @@
                 <div class="g-card-icon g-card-icon-green">
                     <i data-lucide="award" style="width: 22px;"></i>
                 </div>
-                <h3 class="g-card-title">Completed Achievements</h3>
-                <p class="g-card-desc">PyTorch Neural Net Badge, Algorithms Practitioner 2026</p>
+                <h3 class="g-card-title">Erishilgan yutuqlar</h3>
+                <p class="g-card-desc">PyTorch Neyron tarmoq nishoni, Algoritmlar amaliyotchisi 2026</p>
             </div>
-            <span style="font-size: 0.85rem; color: var(--g-green-text); font-weight: 500;">2 Badges Earned</span>
+            <span style="font-size: 0.85rem; color: var(--g-green-text); font-weight: 500;">2 ta nishon qo'lga kiritildi</span>
         </div>
 
         <div class="g-card">
@@ -53,10 +53,10 @@
                 <div class="g-card-icon g-card-icon-yellow">
                     <i data-lucide="code" style="width: 22px;"></i>
                 </div>
-                <h3 class="g-card-title">Projects Portfolio</h3>
-                <p class="g-card-desc">X-FACE Biometric Recognition, Medical Image Diagnostics</p>
+                <h3 class="g-card-title">Loyihalar portfoliosi</h3>
+                <p class="g-card-desc">X-FACE Biometrik tanib olish, Tibbiy tasvirlar diagnostikasi</p>
             </div>
-            <span style="font-size: 0.85rem; color: var(--text-secondary);">2 Active Deployments</span>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">2 ta faol loyiha</span>
         </div>
     </div>
 </div>

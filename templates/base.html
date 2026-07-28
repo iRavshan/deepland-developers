@@ -1,13 +1,34 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Deepland Developers — Build with AI & Engineering{% endblock %}</title>
-    <meta name="description" content="Deepland Developers platform - Learn Artificial Intelligence, Machine Learning, and Computer Science with hands-on guides.">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+    <title>{% block title %}Deepland Dasturchilari — Sun'iy intellekt va Muhandislik{% endblock %}</title>
+    <meta name="description" content="Deepland Dasturchilar platformasi - Sun'iy intellekt, Mashinali o'rgatish va Kompyuter fanlarini amaliy qo'llanmalar orqali o'rganing.">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Apply saved theme immediately to prevent flash of wrong theme
+        (function() {
+            var t = localStorage.getItem('theme');
+            if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -28,32 +49,37 @@
                 <ul class="google-nav-links">
                     <li class="google-nav-item">
                         <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                            <i data-lucide="layout-dashboard" style="width:16px;"></i> Overview
+                            <i data-lucide="layout-dashboard" style="width:16px;"></i> Bosh sahifa
+                        </a>
+                    </li>
+                    <li class="google-nav-item">
+                        <a href="{% url 'learning_guide' %}" class="{% if request.resolver_match.url_name == 'learning_guide' %}active{% endif %}">
+                            <i data-lucide="compass" style="width:16px;"></i> O'quv qo'llanmasi
                         </a>
                     </li>
                     <li class="google-nav-item">
                         <a href="{% url 'course_list' %}" class="{% if request.resolver_match.url_name == 'course_list' or request.resolver_match.url_name == 'course_detail' %}active{% endif %}">
-                            <i data-lucide="book-open-check" style="width:16px;"></i> Courses
+                            <i data-lucide="book-open-check" style="width:16px;"></i> Kurslar
                         </a>
                     </li>
                 </ul>
 
                 <div class="google-nav-right">
-                    <div class="google-search-bar">
-                        <i data-lucide="search" style="width: 16px; color: var(--text-tertiary);"></i>
-                        <input type="text" class="google-search-input" placeholder="Search courses, AI topics...">
-                    </div>
+                    <button class="theme-toggle" id="themeToggle" title="Mavzuni almashtirish" aria-label="Kunduzi/Tungi rejim">
+                        <i data-lucide="sun" style="width: 18px;" class="theme-icon-light"></i>
+                        <i data-lucide="moon" style="width: 18px;" class="theme-icon-dark"></i>
+                    </button>
 
                     {% if user.is_authenticated %}
                         <a href="{% url 'profile' %}" class="btn-google btn-google-outline">
                             <i data-lucide="user" style="width: 16px;"></i> {{ user.username }}
                         </a>
-                        <a href="{% url 'logout' %}" class="btn-google btn-google-text" title="Sign out">
+                        <a href="{% url 'logout' %}" class="btn-google btn-google-text" title="Chiqish">
                             <i data-lucide="log-out" style="width: 16px;"></i>
                         </a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="btn-google btn-google-text">Sign in</a>
-                        <a href="{% url 'signup' %}" class="btn-google btn-google-primary">Get started</a>
+                        <a href="{% url 'login' %}" class="btn-google btn-google-text">Kirish</a>
+                        <a href="{% url 'signup' %}" class="btn-google btn-google-primary">Ro'yxatdan o'tish</a>
                     {% endif %}
                 </div>
             </div>
@@ -64,49 +90,10 @@
     <main style="flex: 1;">
         {% block content %}{% endblock %}
     </main>
-
-    <!-- Google Developers Footer -->
-    <footer class="google-footer">
+    <footer class="google-footer" style="padding-top: 2.5rem; padding-bottom: 2.5rem; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); margin-top: auto;">
         <div class="container">
-            <div class="google-footer-grid">
-                <div class="google-footer-col">
-                    <h4>Connect</h4>
-                    <ul>
-                        <li><a href="https://github.com/iRavshan" target="_blank">GitHub Repository</a></li>
-                        <li><a href="#">Developer Blog</a></li>
-                        <li><a href="#">Community Forum</a></li>
-                    </ul>
-                </div>
-
-                <div class="google-footer-col">
-                    <h4>Programs</h4>
-                    <ul>
-                        <li><a href="{% url 'course_list' %}">AI Developer Pathways</a></li>
-                        <li><a href="{% url 'course_list' %}">Computer Vision X-FACE</a></li>
-                        <li><a href="{% url 'course_list' %}">Python Engineering</a></li>
-                    </ul>
-                </div>
-
-                <div class="google-footer-col">
-                    <h4>Developer Support</h4>
-                    <ul>
-                        <li><a href="/llms.txt">llms.txt Specification</a></li>
-                        <li><a href="/humans.txt">humans.txt Credits</a></li>
-                        <li><a href="#">API Documentation</a></li>
-                    </ul>
-                </div>
-
-                <div class="google-footer-col">
-                    <h4>Deepland Team</h4>
-                    <ul>
-                        <li><span style="color: var(--text-secondary); font-size: 0.85rem;">Founder: Ravshan Sodiqov</span></li>
-                        <li><span style="color: var(--text-secondary); font-size: 0.85rem;">CTO: Botirxonov Faxriyorjon</span></li>
-                        <li><span style="color: var(--text-secondary); font-size: 0.85rem;">Location: Karshi, Uzbekistan</span></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="google-footer-bottom">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                     <div class="google-logo-icon">
                         <span class="g-dot-blue"></span>
@@ -114,18 +101,57 @@
                         <span class="g-dot-yellow"></span>
                         <span class="g-dot-green"></span>
                     </div>
-                    <span>Deepland Developers &copy; 2026</span>
+                    <span style="font-size: 1.2rem; font-weight: 600; color: var(--text-primary);">Deepland</span>
                 </div>
-                <div>
-                    <a href="#" style="color: var(--text-tertiary); text-decoration: none; margin-left: 1.5rem;">Terms</a>
-                    <a href="#" style="color: var(--text-tertiary); text-decoration: none; margin-left: 1.5rem;">Privacy</a>
+
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                    <a href="{% url 'course_list' %}" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s ease;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-secondary)'">Barcha kurslar</a>
+                    <a href="{% url 'learning_guide' %}" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s ease;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-secondary)'">O'quv qo'llanmasi</a>
+                    <a href="#" style="color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s ease;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-secondary)'">Jamiyat forumi</a>
                 </div>
+
+                <div style="font-size: 0.85rem; color: var(--text-tertiary);">
+                    &copy; {% now "Y" %} Deepland Developers. Barcha huquqlar himoyalangan.
+                </div>
+
             </div>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
+
+        // Theme toggle logic
+        (function() {
+            var toggle = document.getElementById('themeToggle');
+            var html = document.documentElement;
+
+            function updateIcons() {
+                var isDark = html.getAttribute('data-theme') === 'dark';
+                document.querySelectorAll('.theme-icon-light').forEach(function(el) {
+                    el.style.display = isDark ? 'none' : 'block';
+                });
+                document.querySelectorAll('.theme-icon-dark').forEach(function(el) {
+                    el.style.display = isDark ? 'block' : 'none';
+                });
+            }
+
+            updateIcons();
+
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    var isDark = html.getAttribute('data-theme') === 'dark';
+                    if (isDark) {
+                        html.removeAttribute('data-theme');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        html.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                    updateIcons();
+                });
+            }
+        })();
     </script>
     {% block extra_scripts %}{% endblock %}
 </body>

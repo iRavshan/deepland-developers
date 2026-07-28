@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Create Account — Deepland Developers{% endblock %}
+{% block title %}Hisob yaratish — Deepland Dasturchilari{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -12,36 +12,36 @@
                 <span class="g-dot-yellow" style="width:12px; height:12px;"></span>
                 <span class="g-dot-green" style="width:12px; height:12px;"></span>
             </div>
-            <h1 style="font-size: 1.5rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem;">Create your Developer Account</h1>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Join Deepland Developer Platform</p>
+            <h1 style="font-size: 1.5rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem;">Dasturchi hisobingizni yarating</h1>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Deepland Dasturchilar platformasiga qo'shiling</p>
         </div>
 
         <form method="POST">
             {% csrf_token %}
             {% if form.errors %}
             <div style="background: var(--g-red-bg); border: 1px solid var(--g-red); color: var(--g-red-text); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.85rem;">
-                Please ensure all fields are valid and passwords match.
+                Iltimos, barcha maydonlar to'g'ri to'ldirilganiga va parollar mos kelishiga ishonch hosil qiling.
             </div>
             {% endif %}
 
             <div class="google-form-group">
-                <label class="google-form-label">Username</label>
-                <input type="text" name="username" class="google-input" required placeholder="Choose a username">
+                <label class="google-form-label">Foydalanuvchi nomi</label>
+                <input type="text" name="username" class="google-input" required placeholder="Foydalanuvchi nomini tanlang">
             </div>
 
             <div class="google-form-group">
-                <label class="google-form-label">Password</label>
+                <label class="google-form-label">Parol</label>
                 <input type="password" name="password1" class="google-input" required placeholder="••••••••">
             </div>
 
             <div class="google-form-group">
-                <label class="google-form-label">Confirm Password</label>
+                <label class="google-form-label">Parolni tasdiqlang</label>
                 <input type="password" name="password2" class="google-input" required placeholder="••••••••">
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
-                <a href="{% url 'login' %}" style="color: var(--g-blue); text-decoration: none; font-size: 0.9rem; font-weight: 500;">Sign in instead</a>
-                <button type="submit" class="btn-google btn-google-primary">Register</button>
+                <a href="{% url 'login' %}" style="color: var(--g-blue); text-decoration: none; font-size: 0.9rem; font-weight: 500;">Tizimga kirish</a>
+                <button type="submit" class="btn-google btn-google-primary">Ro'yxatdan o'tish</button>
             </div>
         </form>
     </div>

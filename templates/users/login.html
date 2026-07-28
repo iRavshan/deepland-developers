@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Sign in — Deepland Developers{% endblock %}
+{% block title %}Kirish — Deepland Dasturchilari{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -12,31 +12,31 @@
                 <span class="g-dot-yellow" style="width:12px; height:12px;"></span>
                 <span class="g-dot-green" style="width:12px; height:12px;"></span>
             </div>
-            <h1 style="font-size: 1.5rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem;">Sign in</h1>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">to continue to Deepland Developers</p>
+            <h1 style="font-size: 1.5rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem;">Tizimga kirish</h1>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Deepland Dasturchilar platformasiga kirish uchun</p>
         </div>
 
         <form method="POST">
             {% csrf_token %}
             {% if form.errors %}
             <div style="background: var(--g-red-bg); border: 1px solid var(--g-red); color: var(--g-red-text); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.85rem;">
-                Invalid username or password. Please try again.
+                Foydalanuvchi nomi yoki parol noto'g'ri. Qaytadan urinib ko'ring.
             </div>
             {% endif %}
 
             <div class="google-form-group">
-                <label class="google-form-label">Username</label>
-                <input type="text" name="username" class="google-input" required placeholder="Enter your username">
+                <label class="google-form-label">Foydalanuvchi nomi</label>
+                <input type="text" name="username" class="google-input" required placeholder="Foydalanuvchi nomini kiriting">
             </div>
 
             <div class="google-form-group">
-                <label class="google-form-label">Password</label>
+                <label class="google-form-label">Parol</label>
                 <input type="password" name="password" class="google-input" required placeholder="••••••••">
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
-                <a href="{% url 'signup' %}" style="color: var(--g-blue); text-decoration: none; font-size: 0.9rem; font-weight: 500;">Create account</a>
-                <button type="submit" class="btn-google btn-google-primary">Next</button>
+                <a href="{% url 'signup' %}" style="color: var(--g-blue); text-decoration: none; font-size: 0.9rem; font-weight: 500;">Hisob yaratish</a>
+                <button type="submit" class="btn-google btn-google-primary">Kirish</button>
             </div>
         </form>
     </div>

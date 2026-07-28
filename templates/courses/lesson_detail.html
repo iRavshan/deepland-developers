@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Developers{% endblock %}
+{% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Dasturchilari{% endblock %}
 
 {% block content %}
 <div class="doc-wrapper">
@@ -12,57 +12,145 @@
             </a>
         </div>
 
-        <div class="doc-sidebar-header">Lesson Navigation</div>
-        <ul class="doc-nav-list">
-            {% for l in course.lessons.all %}
-            <li class="doc-nav-item">
-                <a href="{% url 'lesson_detail' course.slug l.order %}" class="{% if l.order == lesson.order %}active{% endif %}">
-                    <span style="font-weight: 700; opacity: 0.7;">{{ l.order }}.</span>
-                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
-                </a>
-            </li>
+        <div class="doc-nav-list" style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for unit in course.units.all %}
+            <details class="sidebar-accordion" open>
+                <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 0.5rem; padding: 0.5rem; border-radius: var(--radius-sm); transition: background 0.2s ease;" class="g-card-hover-mini">
+                    <span>{{ unit.title }}</span>
+                    <div class="accordion-icons" style="display: flex; align-items: center;">
+                        <i data-lucide="chevron-right" style="width: 14px;" class="icon-closed"></i>
+                        <i data-lucide="chevron-down" style="width: 14px;" class="icon-open"></i>
+                    </div>
+                </summary>
+                <ul class="doc-nav-list" style="margin: 0 0 0.5rem 0; padding: 0;">
+                    {% for l in unit.lessons.all %}
+                    <li class="doc-nav-item">
+                        <a href="{% url 'lesson_detail' course.slug l.order %}" class="{% if l.order == lesson.order %}active{% endif %}">
+                            {% if l.id in completed_lesson_ids %}
+                            <span style="width: 22px; height: 22px; border-radius: 50%; background: var(--g-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                            </span>
+                            {% else %}
+                            <span style="font-weight: 700; opacity: 0.7;">{{ l.order }}.</span>
+                            {% endif %}
+                            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </details>
+            {% empty %}
+            <ul class="doc-nav-list">
+                {% for l in course.lessons.all %}
+                <li class="doc-nav-item">
+                    <a href="{% url 'lesson_detail' course.slug l.order %}" class="{% if l.order == lesson.order %}active{% endif %}">
+                        {% if l.id in completed_lesson_ids %}
+                        <span style="width: 22px; height: 22px; border-radius: 50%; background: var(--g-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                        </span>
+                        {% else %}
+                        <span style="font-weight: 700; opacity: 0.7;">{{ l.order }}.</span>
+                        {% endif %}
+                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
             {% endfor %}
-        </ul>
+        </div>
+
+        {% if user.is_authenticated %}
+        <!-- Sidebar progress -->
+        <div style="margin-top: 1.5rem; padding: 0.75rem; border-top: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 0.4rem;">
+                {{ completed_lesson_ids|length }} / {{ course.lessons.count }} tugatildi
+            </div>
+            <div style="height: 4px; background: var(--border-subtle); border-radius: var(--radius-full); overflow: hidden;">
+                <div style="height: 100%; width: {% widthratio completed_lesson_ids|length course.lessons.count 100 %}%; background: var(--g-green); border-radius: var(--radius-full); transition: width 0.4s ease;"></div>
+            </div>
+        </div>
+        {% endif %}
     </aside>
+
+    <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Navigatsiyani yashirish/ko'rsatish">
+        <i data-lucide="chevron-left" class="toggle-icon-open" style="width: 18px;"></i>
+        <i data-lucide="chevron-right" class="toggle-icon-closed" style="width: 18px;"></i>
+    </button>
 
     <!-- Main Content Article -->
     <main class="doc-content">
         <!-- Breadcrumbs -->
-        <div style="display: flex; align-items: center; gap: 0.4rem; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 1.5rem;">
-            <a href="{% url 'course_list' %}" style="color: var(--text-secondary); text-decoration: none;">Courses</a>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.4rem; color: var(--text-tertiary); font-size: 0.85rem;">
+                <a href="{% url 'course_list' %}" style="color: var(--text-secondary); text-decoration: none;">Kurslar</a>
             <i data-lucide="chevron-right" style="width: 14px;"></i>
-            <a href="{% url 'course_detail' course.slug %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a>
-            <i data-lucide="chevron-right" style="width: 14px;"></i>
-            <span style="color: var(--text-primary); font-weight: 500;">Lesson {{ lesson.order }}</span>
+                <a href="{% url 'course_detail' course.slug %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a>
+                <i data-lucide="chevron-right" style="width: 14px;"></i>
+                <span style="color: var(--text-primary); font-weight: 500;">{{ lesson.order }}-dars</span>
+            </div>
         </div>
 
         <article class="doc-article">
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <span class="g-tag g-tag-intermediate">Lesson {{ lesson.order }} of {{ course.lessons.count }}</span>
+                <span class="g-tag g-tag-intermediate">{{ lesson.order }}-dars / {{ course.lessons.count }}</span>
                 <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
+                {% if is_current_completed %}
+                <span style="color: var(--g-green); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
+                    <i data-lucide="circle-check" style="width: 15px;"></i> Tugatilgan
+                </span>
+                {% endif %}
             </div>
 
             <h1>{{ lesson.title }}</h1>
-
-            <!-- Google Callout Box -->
-            <div class="google-callout">
-                <div class="google-callout-title">
-                    <i data-lucide="info" style="width: 18px;"></i> Key Learning Objective
-                </div>
-                <div>
-                    In this lesson, you will learn the fundamental concepts and practical implementation of {{ lesson.title|lower }}.
-                </div>
-            </div>
 
             <div style="margin: 2rem 0; font-size: 1.05rem; line-height: 1.8; color: var(--text-primary);">
                 <p>{{ lesson.content|safe }}</p>
             </div>
 
+            {% if user.is_authenticated %}
+            <!-- Darsni tugatish tugmasi -->
+            <div style="margin: 2rem 0; padding: 1.5rem; border-radius: var(--radius-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between;">
+                {% if is_current_completed %}
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--g-green); color: #fff; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="check" style="width: 20px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--text-primary);">Dars tugatildi!</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Siz ushbu darsni muvaffaqiyatli tugatlangiz.</div>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-google btn-google-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                        <i data-lucide="rotate-ccw" style="width: 14px;"></i> Bekor qilish
+                    </button>
+                </form>
+                {% else %}
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--g-blue-bg); color: var(--g-blue); display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="book-open-check" style="width: 20px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--text-primary);">Darsni tugatingmi?</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Darsni tugatganingizni belgilang va keyingisiga o'ting.</div>
+                    </div>
+                </div>
+                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-google btn-google-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">
+                        <i data-lucide="check-circle" style="width: 16px;"></i> Tugatildi deb belgilash
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% endif %}
+
             <!-- Navigation Buttons -->
             <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
                 {% if prev_lesson %}
                 <a href="{% url 'lesson_detail' course.slug prev_lesson.order %}" class="btn-google btn-google-outline">
-                    <i data-lucide="arrow-left" style="width: 16px;"></i> Previous Lesson
+                    <i data-lucide="arrow-left" style="width: 16px;"></i> Oldingi dars
                 </a>
                 {% else %}
                 <div></div>
@@ -70,15 +158,93 @@
 
                 {% if next_lesson %}
                 <a href="{% url 'lesson_detail' course.slug next_lesson.order %}" class="btn-google btn-google-primary">
-                    Next Lesson <i data-lucide="arrow-right" style="width: 16px;"></i>
+                    Keyingi dars <i data-lucide="arrow-right" style="width: 16px;"></i>
                 </a>
                 {% else %}
                 <a href="{% url 'course_detail' course.slug %}" class="btn-google btn-google-primary">
-                    Finish Course <i data-lucide="check-circle" style="width: 16px;"></i>
+                    Kursni yakunlash <i data-lucide="check-circle" style="width: 16px;"></i>
                 </a>
                 {% endif %}
+            </div>
+
+            <!-- Feedback Section -->
+            <div style="margin-top: 4rem; padding-top: 2.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.25rem;">Ushbu dars sizga foydali bo'ldimi?</h3>
+                {% csrf_token %}
+                <div id="feedbackButtons" style="display: flex; gap: 1rem;">
+                    <button id="btn-like" class="btn-google {% if user_feedback == 'like' %}btn-google-primary{% else %}btn-google-outline{% endif %}" onclick="handleFeedback('like')" style="display: flex; align-items: center; gap: 0.5rem; border-radius: var(--radius-full); padding: 0.5rem 1.5rem; {% if not user.is_authenticated %}opacity: 0.5; cursor: not-allowed;{% endif %}" {% if not user.is_authenticated %}disabled title="Fikr bildirish uchun tizimga kiring"{% endif %}>
+                        <i data-lucide="thumbs-up" style="width: 18px;"></i> Ha
+                    </button>
+                    <button id="btn-dislike" class="btn-google {% if user_feedback == 'dislike' %}btn-google-primary{% else %}btn-google-outline{% endif %}" onclick="handleFeedback('dislike')" style="display: flex; align-items: center; gap: 0.5rem; border-radius: var(--radius-full); padding: 0.5rem 1.5rem; {% if not user.is_authenticated %}opacity: 0.5; cursor: not-allowed;{% endif %}" {% if not user.is_authenticated %}disabled title="Fikr bildirish uchun tizimga kiring"{% endif %}>
+                        <i data-lucide="thumbs-down" style="width: 18px;"></i> Yo'q
+                    </button>
+                </div>
             </div>
         </article>
     </main>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggleBtn = document.getElementById('sidebarToggle');
+        var wrapper = document.querySelector('.doc-wrapper');
+        
+        // Restore state from localStorage
+        var isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+        if (isCollapsed) {
+            wrapper.classList.add('sidebar-collapsed');
+        }
+
+        // Toggle action
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                var isNowCollapsed = wrapper.classList.toggle('sidebar-collapsed');
+                localStorage.setItem('sidebar_collapsed', isNowCollapsed);
+            });
+        }
+    });
+
+    function handleFeedback(type) {
+        var url = "{% url 'toggle_lesson_feedback' course.slug lesson.order %}";
+        var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        var btnLike = document.getElementById('btn-like');
+        var btnDislike = document.getElementById('btn-dislike');
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ type: type })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Reset both to outline
+                btnLike.classList.remove('btn-google-primary');
+                btnLike.classList.add('btn-google-outline');
+                btnDislike.classList.remove('btn-google-primary');
+                btnDislike.classList.add('btn-google-outline');
+                
+                // Set the active one
+                if (data.action === 'added' || data.action === 'updated') {
+                    if (data.type === 'like') {
+                        btnLike.classList.remove('btn-google-outline');
+                        btnLike.classList.add('btn-google-primary');
+                    } else if (data.type === 'dislike') {
+                        btnDislike.classList.remove('btn-google-outline');
+                        btnDislike.classList.add('btn-google-primary');
+                    }
+                }
+            } else {
+                alert(data.message || 'Xatolik yuz berdi');
+            }
+        })
+        .catch(err => console.error(err));
+    }
+</script>
 {% endblock %}
