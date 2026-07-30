@@ -69,6 +69,7 @@ class Lesson(models.Model):
 
     class Meta:
         ordering = ['order']
+        unique_together = ['course', 'order']
 
     def __str__(self):
         return f"{self.course.title} - {self.title}"

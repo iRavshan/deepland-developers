@@ -699,6 +699,7 @@ body {
 }
 
 .doc-content {
+    font-family: 'Inter';
     padding: 40px;
     max-width: 920px;
     flex-grow: 1;
@@ -711,7 +712,6 @@ body {
 }
 
 .doc-article h1 {
-    font-family: var(--font-heading);
     font-size: 2.25rem;
     font-weight: 700;
     color: var(--text-primary);
@@ -720,13 +720,11 @@ body {
 }
 
 .doc-article h2 {
-    font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
     margin: 2rem 0 1rem;
     padding-bottom: 0.4rem;
-    border-bottom: 1px solid var(--border-subtle);
 }
 
 .doc-article p {
@@ -802,7 +800,6 @@ body {
 
 .doc-article pre {
     background-color: var(--bg-surface);
-    padding: 1.25rem;
     border-radius: var(--radius-md);
     overflow-x: auto;
     border: 1px solid var(--border-subtle);

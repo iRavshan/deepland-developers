@@ -2,6 +2,132 @@
 
 {% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Dasturchilari{% endblock %}
 
+{% block extra_head %}
+<link id="hljs-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<style>
+    /* Theme Variables for Code Editor */
+    .code-editor-wrapper {
+        --editor-bg: #f6f8fa;
+        --editor-border: #d0d7de;
+        --editor-header-bg: #eaeef2;
+        --editor-text: #57606a;
+    }
+    [data-theme="dark"] .code-editor-wrapper {
+        --editor-bg: #282c34;
+        --editor-border: #3e4451;
+        --editor-header-bg: #21252b;
+        --editor-text: #abb2bf;
+    }
+
+    .doc-article pre {
+        background-color: var(--editor-bg);
+        border-radius: var(--radius-md);
+        margin: 1.5rem 0;
+        overflow-x: auto;
+    }
+    .doc-article pre code {
+        font-family: var(--font-code, 'Consolas', monospace);
+        font-size: 0.95rem;
+        padding: 1.25rem;
+        line-height: 1.5;
+        background-color: transparent !important;
+        color: inherit !important;
+        display: block;
+    }
+
+    /* Code Editor Styles */
+    .code-editor-wrapper {
+        background-color: var(--editor-bg);
+        border-radius: var(--radius-md);
+        margin: 1.5rem 0;
+        overflow: hidden;
+        border: 1px solid var(--editor-border);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    .code-editor-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background-color: var(--editor-header-bg);
+        border-bottom: 1px solid var(--editor-border);
+    }
+    .code-editor-dots {
+        display: flex;
+        gap: 0.4rem;
+    }
+    .code-editor-dots span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .code-editor-dots span:nth-child(1) { background-color: #ff5f56; }
+    .code-editor-dots span:nth-child(2) { background-color: #ffbd2e; }
+    .code-editor-dots span:nth-child(3) { background-color: #27c93f; }
+    
+    .code-editor-copy {
+        background: transparent;
+        border: none;
+        color: var(--editor-text);
+        font-size: 0.8rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+    .code-editor-copy:hover {
+        background-color: var(--editor-border);
+        color: var(--text-primary);
+    }
+    [data-theme="dark"] .code-editor-copy:hover {
+        color: #fff;
+    }
+    .code-editor-copy.copied {
+        color: #27c93f;
+    }
+
+    .code-editor-wrapper pre {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        overflow-x: auto;
+    }
+    
+    /* Scrollbar for Code Editor */
+    .code-editor-wrapper pre::-webkit-scrollbar {
+        height: 8px;
+    }
+    .code-editor-wrapper pre::-webkit-scrollbar-track {
+        background: var(--editor-bg);
+    }
+    .code-editor-wrapper pre::-webkit-scrollbar-thumb {
+        background-color: rgba(127, 127, 127, 0.25);
+        border-radius: 4px;
+    }
+    .code-editor-wrapper pre::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(127, 127, 127, 0.45);
+    }
+
+    /* Iframe Styles for Video Embeds */
+    .doc-article iframe {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 16 / 9;
+        border: none;
+        border-radius: var(--radius-md);
+        margin: 2rem 0;
+        background-color: var(--editor-bg);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        display: block;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="doc-wrapper">
     <!-- Left Navigation Tree Sidebar -->
@@ -91,7 +217,7 @@
         </div>
 
         <article class="doc-article">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.55rem;">
                 <span class="g-tag g-tag-intermediate">{{ lesson.order }}-dars / {{ course.lessons.count }}</span>
                 <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
                 {% if is_current_completed %}
@@ -132,7 +258,7 @@
                         <i data-lucide="book-open-check" style="width: 20px;"></i>
                     </div>
                     <div>
-                        <div style="font-weight: 600; color: var(--text-primary);">Darsni tugatingmi?</div>
+                        <div style="font-weight: 600; color: var(--text-primary);">Yakunladingizmi?</div>
                         <div style="font-size: 0.85rem; color: var(--text-secondary);">Darsni tugatganingizni belgilang va keyingisiga o'ting.</div>
                     </div>
                 </div>
@@ -186,6 +312,98 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    // Theme switching for highlight.js
+    function updateHljsTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const themeLink = document.getElementById('hljs-theme');
+        if (themeLink) {
+            if (isDark) {
+                themeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css';
+            } else {
+                themeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
+            }
+        }
+    }
+    
+    // Initial theme setup
+    updateHljsTheme();
+    
+    // Listen for theme changes on root element
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'data-theme') {
+                updateHljsTheme();
+            }
+        });
+    });
+    observer.observe(document.documentElement, { attributes: ['data-theme'] });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.doc-article pre').forEach((pre) => {
+            // Agar allaqachon o'ralgan bo'lsa, o'tkazib yuborish
+            if (pre.parentNode.classList.contains('code-editor-wrapper')) return;
+
+            // Wrapper yaratish
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-editor-wrapper';
+            
+            // Header yaratish
+            const header = document.createElement('div');
+            header.className = 'code-editor-header';
+            
+            // Oyna tugmalari (qizil, sariq, yashil)
+            const dots = document.createElement('div');
+            dots.className = 'code-editor-dots';
+            dots.innerHTML = '<span></span><span></span><span></span>';
+            
+            // Nusxalash tugmasi
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'code-editor-copy';
+            copyBtn.innerHTML = '<i data-lucide="copy" style="width: 14px; height: 14px;"></i> <span>Nusxalash</span>';
+            
+            const codeEl = pre.querySelector('code');
+            
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = codeEl ? codeEl.innerText : pre.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalHtml = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i data-lucide="check" style="width: 14px; height: 14px;"></i> <span>Nusxalandi!</span>';
+                    copyBtn.classList.add('copied');
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons({ root: copyBtn });
+                    }
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHtml;
+                        copyBtn.classList.remove('copied');
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons({ root: copyBtn });
+                        }
+                    }, 2000);
+                });
+            });
+            
+            header.appendChild(dots);
+            header.appendChild(copyBtn);
+            
+            // Pre elementini wrapper ichiga o'tkazish
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(header);
+            wrapper.appendChild(pre);
+
+            if (codeEl) {
+                hljs.highlightElement(codeEl);
+            }
+        });
+        
+        // Yangi qo'shilgan iconlarni render qilish
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var toggleBtn = document.getElementById('sidebarToggle');
