@@ -9,4 +9,5 @@ urlpatterns = [
     path('courses/<slug:course_slug>/lesson/<int:lesson_order>/', views.lesson_detail, name='lesson_detail'),
     path('courses/<slug:course_slug>/lesson/<int:lesson_order>/toggle-complete/', views.toggle_lesson_complete, name='toggle_lesson_complete'),
     path('courses/<slug:course_slug>/lesson/<int:lesson_order>/toggle-feedback/', views.toggle_lesson_feedback, name='toggle_lesson_feedback'),
+    path('courses/<slug:course_slug>/lesson/<int:lesson_order>/toggle-bookmark/', views.toggle_lesson_bookmark, name='toggle_lesson_bookmark'),
 ]

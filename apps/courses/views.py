@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from apps.courses.models import Category, Course, Lesson, LessonCompletion, LessonFeedback
+from apps.courses.models import Category, Course, Lesson, LessonCompletion, LessonFeedback, LessonBookmark
 from apps.users.models import UserProfile
 
 def home(request):
@@ -91,6 +91,7 @@ def lesson_detail(request, course_slug, lesson_order):
     completed_lesson_ids = set()
     is_current_completed = False
     user_feedback = None
+    is_bookmarked = False
     if request.user.is_authenticated:
         completed_lesson_ids = set(
             LessonCompletion.objects.filter(
@@ -103,6 +104,8 @@ def lesson_detail(request, course_slug, lesson_order):
         feedback_obj = LessonFeedback.objects.filter(user=request.user, lesson=lesson).first()
         if feedback_obj:
             user_feedback = 'like' if feedback_obj.is_helpful else 'dislike'
+            
+        is_bookmarked = LessonBookmark.objects.filter(user=request.user, lesson=lesson).exists()
 
     context = {
         'course': course,
@@ -112,6 +115,7 @@ def lesson_detail(request, course_slug, lesson_order):
         'completed_lesson_ids': completed_lesson_ids,
         'is_current_completed': is_current_completed,
         'user_feedback': user_feedback,
+        'is_bookmarked': is_bookmarked,
     }
     return render(request, 'courses/lesson_detail.html', context)
 
@@ -174,3 +178,21 @@ def toggle_lesson_feedback(request, course_slug, lesson_order):
             return JsonResponse({'status': 'success', 'action': 'updated', 'type': feedback_type})
             
     return JsonResponse({'status': 'success', 'action': 'added', 'type': feedback_type})
+
+@login_required
+@require_POST
+def toggle_lesson_bookmark(request, course_slug, lesson_order):
+    """API for toggling lesson bookmark"""
+    course = get_object_or_404(Course, slug=course_slug)
+    lesson = get_object_or_404(Lesson, course=course, order=lesson_order)
+    
+    bookmark, created = LessonBookmark.objects.get_or_create(
+        user=request.user,
+        lesson=lesson
+    )
+    
+    if not created:
+        bookmark.delete()
+        return JsonResponse({'status': 'success', 'action': 'removed'})
+        
+    return JsonResponse({'status': 'success', 'action': 'added'})

@@ -104,3 +104,17 @@ class LessonFeedback(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.lesson.title} ({'Foydali' if self.is_helpful else 'Foydasiz'})"
+
+class LessonBookmark(models.Model):
+    """Foydalanuvchilar darslarni saqlab qo'yishi uchun (Bookmark)"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lesson_bookmarks')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='bookmarks')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'lesson']
+        verbose_name = "Saqlangan dars"
+        verbose_name_plural = "Saqlangan darslar"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.lesson.title}"

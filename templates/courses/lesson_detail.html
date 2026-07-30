@@ -125,6 +125,52 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         display: block;
     }
+
+    /* Heading Copy Button */
+    .heading-copy-btn {
+        opacity: 0;
+        margin-left: 0.5rem;
+        background: transparent;
+        border: none;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        padding: 0.2rem;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        vertical-align: middle;
+    }
+    
+    .lesson-content h1:hover .heading-copy-btn, 
+    .lesson-content h2:hover .heading-copy-btn, 
+    .lesson-content h3:hover .heading-copy-btn, 
+    .lesson-content h4:hover .heading-copy-btn, 
+    .lesson-content h5:hover .heading-copy-btn, 
+    .lesson-content h6:hover .heading-copy-btn {
+        opacity: 1;
+    }
+
+    .heading-copy-btn:hover {
+        background-color: var(--editor-border);
+        color: var(--text-primary);
+    }
+    [data-theme="dark"] .heading-copy-btn:hover {
+        color: #fff;
+    }
+    .heading-copy-btn.copied {
+        color: #27c93f;
+    }
+
+    /* Links in lesson content */
+    .lesson-content a {
+        text-decoration: none;
+        color: var(--g-blue); /* Optional: ensures links are visible */
+    }
+    .lesson-content a:hover {
+        text-decoration: underline;
+    }
 </style>
 {% endblock %}
 
@@ -217,20 +263,30 @@
         </div>
 
         <article class="doc-article">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.55rem;">
-                <span class="g-tag g-tag-intermediate">{{ lesson.order }}-dars / {{ course.lessons.count }}</span>
-                <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
-                {% if is_current_completed %}
-                <span style="color: var(--g-green); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
-                    <i data-lucide="circle-check" style="width: 15px;"></i> Tugatilgan
-                </span>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <span class="g-tag g-tag-intermediate">{{ lesson.order }}-dars / {{ course.lessons.count }}</span>
+                        <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
+                        {% if is_current_completed %}
+                        <span style="color: var(--g-green); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
+                            <i data-lucide="circle-check" style="width: 15px;"></i> Tugatilgan
+                        </span>
+                        {% endif %}
+                    </div>
+                    <h1 style="margin: 0;">{{ lesson.title }}</h1>
+                </div>
+                
+                {% if user.is_authenticated %}
+                <button id="btn-bookmark" class="btn-google {% if is_bookmarked %}btn-google-primary{% else %}btn-google-outline{% endif %}" onclick="toggleBookmark()" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; flex-shrink: 0;">
+                    <i data-lucide="bookmark" style="width: 16px; {% if is_bookmarked %}fill: currentColor;{% endif %}" id="bookmark-icon"></i>
+                    <span id="bookmark-text">{% if is_bookmarked %}Saqlangan{% else %}Saqlash{% endif %}</span>
+                </button>
                 {% endif %}
             </div>
 
-            <h1>{{ lesson.title }}</h1>
-
-            <div style="margin: 2rem 0; font-size: 1.05rem; line-height: 1.8; color: var(--text-primary);">
-                <p>{{ lesson.content|safe }}</p>
+            <div class="lesson-content" style="margin: 2rem 0; font-size: 1.05rem; line-height: 1.8; color: var(--text-primary);">
+                {{ lesson.content|safe }}
             </div>
 
             {% if user.is_authenticated %}
@@ -243,7 +299,7 @@
                     </div>
                     <div>
                         <div style="font-weight: 600; color: var(--text-primary);">Dars tugatildi!</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Siz ushbu darsni muvaffaqiyatli tugatlangiz.</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Siz ushbu darsni muvaffaqiyatli tugatgangiz.</div>
                     </div>
                 </div>
                 <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
@@ -397,6 +453,43 @@
                 hljs.highlightElement(codeEl);
             }
         });
+
+        // Headinglarga copy link tugmasini qo'shish
+        const headings = document.querySelectorAll('.lesson-content h1, .lesson-content h2, .lesson-content h3, .lesson-content h4, .lesson-content h5, .lesson-content h6');
+        headings.forEach(heading => {
+            if (!heading.id) {
+                const text = heading.textContent.toLowerCase().trim();
+                const id = text.replace(/[\s\W-]+/g, '-').replace(/^-+|-+$/g, '');
+                heading.id = id || 'section-' + Math.random().toString(36).substr(2, 9);
+            }
+
+            const btn = document.createElement('button');
+            btn.className = 'heading-copy-btn';
+            btn.innerHTML = '<i data-lucide="link" style="width: 18px; height: 18px;"></i>';
+            btn.title = "Havolani nusxalash";
+            
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = window.location.origin + window.location.pathname + '#' + heading.id;
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i data-lucide="check" style="width: 18px; height: 18px;"></i>';
+                    btn.classList.add('copied');
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons({ root: btn });
+                    }
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.classList.remove('copied');
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons({ root: btn });
+                        }
+                    }, 2000);
+                });
+            });
+            
+            heading.appendChild(btn);
+        });
         
         // Yangi qo'shilgan iconlarni render qilish
         if (typeof lucide !== 'undefined') {
@@ -457,6 +550,46 @@
                         btnDislike.classList.remove('btn-google-outline');
                         btnDislike.classList.add('btn-google-primary');
                     }
+                }
+            } else {
+                alert(data.message || 'Xatolik yuz berdi');
+            }
+        })
+        .catch(err => console.error(err));
+    }
+
+    function toggleBookmark() {
+        var url = "{% url 'toggle_lesson_bookmark' course.slug lesson.order %}";
+        var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        var btnBookmark = document.getElementById('btn-bookmark');
+        var icon = document.getElementById('bookmark-icon');
+        var text = document.getElementById('bookmark-text');
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                if (data.action === 'added') {
+                    btnBookmark.classList.remove('btn-google-outline');
+                    btnBookmark.classList.add('btn-google-primary');
+                    text.innerText = 'Saqlangan';
+                    icon.outerHTML = '<i data-lucide="bookmark" style="width: 16px; fill: currentColor;" id="bookmark-icon"></i>';
+                } else {
+                    btnBookmark.classList.remove('btn-google-primary');
+                    btnBookmark.classList.add('btn-google-outline');
+                    text.innerText = 'Saqlash';
+                    icon.outerHTML = '<i data-lucide="bookmark" style="width: 16px;" id="bookmark-icon"></i>';
+                }
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
                 }
             } else {
                 alert(data.message || 'Xatolik yuz berdi');
