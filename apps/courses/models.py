@@ -6,6 +6,7 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     icon = models.CharField(max_length=50, default="code")
+    image = models.ImageField(upload_to='categories/', blank=True, null=True, verbose_name="Kategoriya rasmi")
     description = models.TextField(blank=True)
 
     class Meta:
@@ -24,6 +25,7 @@ class Course(models.Model):
     slug = models.SlugField(unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='courses')
     description = models.TextField()
+    image = models.ImageField(upload_to='courses/', blank=True, null=True, verbose_name="Kurs rasmi")
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner')
     duration = models.CharField(max_length=50, default='10 soat')
     total_lessons = models.IntegerField(default=12)

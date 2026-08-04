@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Yangi loyiha qo'shish | Deepland{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 4rem 0;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 2rem; color: var(--text-primary); font-weight: 700; margin-bottom: 1rem;">
+                Yangi loyiha qo'shish
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 1.05rem;">
+                O'z ishingizni boshqalar bilan bo'lishing va fikrlar oling.
+            </p>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 2.5rem;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="{{ field.id_for_label }}" style="display: block; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem;">
+                        {{ field.label }}
+                        {% if field.field.required %}<span style="color: var(--g-red);">*</span>{% endif %}
+                    </label>
+                    
+                    {% if field.name == 'description' %}
+                        <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" rows="5" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-body); color: var(--text-primary); font-family: inherit; font-size: 1rem; transition: border-color 0.2s;" {% if field.field.required %}required{% endif %} placeholder="{{ field.label }}ni kiriting...">{% if field.value %}{{ field.value }}{% endif %}</textarea>
+                    {% elif field.name == 'image' %}
+                        <input type="file" name="{{ field.name }}" id="{{ field.id_for_label }}" accept="image/*" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-body); color: var(--text-primary); font-size: 0.95rem;">
+                    {% elif field.name == 'authors' %}
+                        <select name="{{ field.name }}" id="{{ field.id_for_label }}" multiple style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-body); color: var(--text-primary); font-size: 1rem; transition: border-color 0.2s;" {% if field.field.required %}required{% endif %}>
+                            {% for pk, choice in field.field.choices %}
+                                <option value="{{ pk }}" {% if pk in field.value|default_if_none:'' %}selected{% endif %}>{{ choice }}</option>
+                            {% endfor %}
+                        </select>
+                        <p style="font-size: 0.8rem; color: var(--text-tertiary); margin-top: 4px;">Siz avtomatik ravishda qo'shilasiz. Ctrl (Windows) yoki Command (Mac) ni bosib turib ko'proq mualliflarni tanlashingiz mumkin.</p>
+                    {% else %}
+                        <input type="{% if 'link' in field.name %}url{% else %}text{% endif %}" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default_if_none:'' }}" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-subtle); border-radius: 8px; background: var(--bg-body); color: var(--text-primary); font-size: 1rem; transition: border-color 0.2s;" {% if field.field.required %}required{% endif %} placeholder="{{ field.label }}...">
+                    {% endif %}
+                    
+                    {% if field.help_text %}
+                        <p style="font-size: 0.85rem; color: var(--text-tertiary); margin-top: 0.5rem;">{{ field.help_text }}</p>
+                    {% endif %}
+                    
+                    {% if field.errors %}
+                        <div style="color: var(--g-red); font-size: 0.85rem; margin-top: 0.5rem;">
+                            {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-google btn-google-primary" style="flex: 1;">
+                        <i data-lucide="check" style="width: 18px; margin-right: 8px;"></i> Loyihani saqlash
+                    </button>
+                    <a href="{% url 'projects:list' %}" class="btn-google btn-google-outline">
+                        Bekor qilish
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

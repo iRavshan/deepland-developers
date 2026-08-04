@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} | Loyihalar{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 4rem 0;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+        <!-- Back link -->
+        <a href="{% url 'projects:list' %}" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); text-decoration: none; margin-bottom: 2rem; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-secondary)'">
+            <i data-lucide="arrow-left" style="width: 16px;"></i> Loyihalarga qaytish
+        </a>
+
+        <!-- Header -->
+        <div style="margin-bottom: 2.5rem;">
+            <h1 style="font-size: 2.5rem; color: var(--text-primary); font-weight: 700; margin-bottom: 0.5rem; line-height: 1.2;">
+                {{ project.title }}
+            </h1>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 320px; gap: 2.5rem; align-items: start;">
+            <!-- Chap tomon: Asosiy ma'lumotlar -->
+            <div>
+                <!-- Image -->
+                {% if project.image %}
+                <div style="border-radius: 16px; overflow: hidden; margin-bottom: 2rem; border: 1px solid var(--border-subtle); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" style="width: 100%; display: block;">
+                </div>
+                {% endif %}
+
+                <!-- Content -->
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 2.5rem;">
+                    
+                    <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap;">
+                        {% if project.live_link %}
+                        <a href="{{ project.live_link }}" target="_blank" class="btn-google btn-google-primary">
+                            <i data-lucide="external-link" style="width: 18px; margin-right: 8px;"></i> Jonli ko'rish
+                        </a>
+                        {% endif %}
+                        
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank" class="btn-google btn-google-outline">
+                            <i data-lucide="github" style="width: 18px; margin-right: 8px;"></i> Kodni ko'rish (GitHub)
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <h3 style="font-size: 1.5rem; color: var(--text-primary); font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;">
+                        Loyiha haqida
+                    </h3>
+                    
+                    <div style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; white-space: pre-wrap;">{{ project.description }}</div>
+                    
+                </div>
+            </div>
+
+            <!-- O'ng tomon: Sidebar -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 2rem; position: sticky; top: 2rem;">
+                <h3 style="font-size: 1.25rem; color: var(--text-primary); font-weight: 600; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-subtle);">
+                    Loyiha yaratuvchilari
+                </h3>
+                
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem;">
+                    {% for author in project.authors.all %}
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 44px; height: 44px; background: var(--g-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.1rem; flex-shrink: 0;">
+                            {{ author.username|make_list|first|upper }}
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary); font-size: 1.05rem;">{{ author.username }}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-tertiary);">Jamoa a'zosi</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div style="border-top: 1px solid var(--border-subtle); padding-top: 1.5rem;">
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <span style="color: var(--text-tertiary); font-size: 0.85rem;">Yuklangan sana</span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-primary); font-size: 0.95rem; font-weight: 500;">
+                            <i data-lucide="calendar" style="width: 16px; color: var(--text-secondary);"></i>
+                            {{ project.created_at|date:"d M, Y" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kichik ekranlar uchun moslashtirish (Responsive) -->
+<style>
+    @media (max-width: 768px) {
+        .container > div > div:nth-child(3) {
+            grid-template-columns: 1fr !important;
+        }
+        .container > div > div:nth-child(3) > div:last-child {
+            position: static !important;
+        }
+    }
+</style>
+{% endblock %}

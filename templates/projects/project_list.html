@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Loyihalar | Deepland Developers{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: var(--bg-surface); padding: 4rem 0; border-bottom: 1px solid var(--border-subtle); text-align: center;">
+    <div class="container">
+        <h1 style="font-size: 2.5rem; color: var(--text-primary); margin-bottom: 1rem; font-weight: 700;">
+            O'quvchilar loyihalari
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+            Deepland platformasida o'qiyotgan dasturchilar tomonidan yaratilgan ajoyib loyihalar bilan tanishing.
+        </p>
+        {% if user.is_authenticated %}
+            <a href="{% url 'projects:create' %}" class="btn-google btn-google-primary">
+                <i data-lucide="plus-circle" style="width: 18px; margin-right: 8px;"></i> O'z loyihangizni qo'shish
+            </a>
+        {% else %}
+            <p style="color: var(--text-tertiary); font-size: 0.95rem;">Loyiha qo'shish uchun <a href="{% url 'login' %}" style="color: var(--g-blue); text-decoration: none;">tizimga kiring</a>.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container" style="padding: 4rem 0;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+        {% for project in projects %}
+        <div class="course-card" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+            {% else %}
+                <div style="width: 100%; height: 200px; background: linear-gradient(135deg, var(--g-blue) 0%, var(--g-purple) 100%); display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="code" style="color: white; width: 48px; height: 48px;"></i>
+                </div>
+            {% endif %}
+            
+            <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.4;">
+                    <a href="{{ project.get_absolute_url }}" style="color: inherit; text-decoration: none;">{{ project.title }}</a>
+                </h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5; flex: 1;">
+                    {{ project.description|truncatewords:20 }}
+                </p>
+                <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+                    <div style="display: flex; align-items: center;">
+                        {% for author in project.authors.all|slice:":3" %}
+                        <div style="width: 28px; height: 28px; background: var(--g-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: bold; border: 2px solid var(--bg-surface); {% if not forloop.first %}margin-left: -8px;{% endif %}" title="{{ author.username }}">
+                            {{ author.username|make_list|first|upper }}
+                        </div>
+                        {% endfor %}
+                        {% if project.authors.count > 3 %}
+                        <div style="width: 28px; height: 28px; background: var(--bg-body); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 0.7rem; font-weight: bold; border: 2px solid var(--bg-surface); margin-left: -8px;" title="Yana {{ project.authors.count|add:'-3' }} kishi">
+                            +{{ project.authors.count|add:"-3" }}
+                        </div>
+                        {% endif %}
+                        <span style="font-size: 0.85rem; color: var(--text-tertiary); font-weight: 500; margin-left: 8px;">
+                            {% if project.authors.count == 1 %}{{ project.authors.first.username }}{% else %}{{ project.authors.count }} kishi{% endif %}
+                        </span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem;">
+                        {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank" style="color: var(--text-tertiary); transition: color 0.2s;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-tertiary)'" title="GitHub">
+                            <i data-lucide="github" style="width: 18px;"></i>
+                        </a>
+                        {% endif %}
+                        {% if project.live_link %}
+                        <a href="{{ project.live_link }}" target="_blank" style="color: var(--text-tertiary); transition: color 0.2s;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-tertiary)'" title="Live Preview">
+                            <i data-lucide="external-link" style="width: 18px;"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;">
+            <i data-lucide="folder-open" style="width: 64px; height: 64px; color: var(--text-tertiary); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-primary); font-size: 1.25rem; margin-bottom: 0.5rem;">Hozircha loyihalar yo'q</h3>
+            <p style="color: var(--text-secondary);">Birinchi bo'lib o'z loyihangizni qo'shing!</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn-google btn-google-outline" style="padding: 0.5rem 1rem;">Oldingi</a>
+        {% endif %}
+        
+        <span style="display: flex; align-items: center; padding: 0 1rem; color: var(--text-secondary); font-weight: 500;">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn-google btn-google-outline" style="padding: 0.5rem 1rem;">Keyingi</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

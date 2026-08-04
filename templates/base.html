@@ -63,6 +63,11 @@
                             <i data-lucide="book-open-check" style="width:16px;"></i> Kurslar
                         </a>
                     </li>
+                    <li class="google-nav-item">
+                        <a href="{% url 'projects:list' %}" class="{% if request.resolver_match.app_name == 'projects' %}active{% endif %}">
+                            <i data-lucide="code" style="width:16px;"></i> Loyihalar
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="google-nav-right">
