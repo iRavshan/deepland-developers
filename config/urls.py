@@ -2,6 +2,10 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from django.urls import path, include
 
+admin.site.site_header = "Deepland Developers"
+admin.site.site_title = "Deepland Developers"
+admin.site.index_title = "Boshqaruv paneliga xush kelibsiz"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.courses.urls')),

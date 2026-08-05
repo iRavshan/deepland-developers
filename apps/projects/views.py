@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.views import View
+from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Project
 
@@ -31,3 +33,21 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         # Ensure the creator is in the authors list
         self.object.authors.add(self.request.user)
         return response
+
+class ProjectLikeToggleView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        project = get_object_or_404(Project, pk=pk)
+        user = request.user
+        liked = False
+        
+        if user in project.likes.all():
+            project.likes.remove(user)
+            liked = False
+        else:
+            project.likes.add(user)
+            liked = True
+            
+        return JsonResponse({
+            'liked': liked,
+            'total_likes': project.total_likes()
+        })

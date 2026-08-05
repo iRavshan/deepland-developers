@@ -128,39 +128,30 @@
                 Amaliy loyihalar
             </div>
             <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
-                Deepland platformasida yaratilgan: X-FACE & S.I.T loyihalari
+                O'quvchilar tomonidan yaratilgan loyihalar
             </h2>
             <p style="color: var(--text-secondary); font-size: 1rem;">
-                Mintaqaviy tanlovlarda g'olib chiqqan modern Kompyuteriy ko'rish va Tibbiy diagnostika neyron tarmoqlari arxitekturasini o'rganing.
+                Platformamiz orqali bilim olib, amalda qo'llanilgan eng yaxshi dasturiy mahsulotlar va arxitekturalarni o'rganing.
             </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+            {% for project in student_projects %}
             <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem;">
                 <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i data-lucide="scan-face" style="width: 22px;"></i>
+                    <i data-lucide="code" style="width: 22px;"></i>
                 </div>
-                <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">X-FACE Yuzni tanib olish tizimi</h3>
+                <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">{{ project.title }}</h3>
                 <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem;">
-                    Reallik rejimida yuzni aniqlash va deskriptorlarni moslashtiruvchi mintaqaviy mukofotga sazovor bo'lgan biometrik kompyuteriy ko'rish arxitekturasi (2022).
+                    {{ project.description|truncatewords:20 }}
                 </p>
-                <a href="{% url 'course_detail' 'computer-vision-xface' %}" style="color: var(--g-blue); font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem;">
+                <a href="{{ project.get_absolute_url }}" style="color: var(--g-blue); font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem;">
                     Loyihani ko'rish <i data-lucide="arrow-right" style="width: 16px;"></i>
                 </a>
             </div>
-
-            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem;">
-                <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--g-green-bg); color: var(--g-green-text); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
-                    <i data-lucide="activity" style="width: 22px;"></i>
-                </div>
-                <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">S.I.T Tibbiy AI Vositasi</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem;">
-                    Rentgen va MPT tibbiy tasvirlarini diagnostika qilish uchun konvolyutsion neyron tarmog'i modeli (2023).
-                </p>
-                <a href="{% url 'course_detail' 'deep-learning-fundamentals' %}" style="color: var(--g-blue); font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.3rem;">
-                    Arxitekturani o'rganish <i data-lucide="arrow-right" style="width: 16px;"></i>
-                </a>
-            </div>
+            {% empty %}
+            <p style="color: var(--text-secondary);">Hozircha loyihalar kiritilmagan.</p>
+            {% endfor %}
         </div>
     </div>
 </div>

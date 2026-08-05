@@ -9,6 +9,7 @@ class Project(models.Model):
     github_link = models.URLField(blank=True, null=True, verbose_name="GitHub havolasi")
     live_link = models.URLField(blank=True, null=True, verbose_name="Jonli havola (Live link)")
     authors = models.ManyToManyField(User, related_name='projects', verbose_name="Mualliflar (Jamoa a'zolari)")
+    likes = models.ManyToManyField(User, related_name='liked_projects', blank=True, verbose_name="Layklar")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Yaratilgan vaqti")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Tahrirlangan vaqti")
 
@@ -22,3 +23,6 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse('projects:detail', kwargs={'pk': self.pk})
+
+    def total_likes(self):
+        return self.likes.count()

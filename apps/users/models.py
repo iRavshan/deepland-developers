@@ -12,9 +12,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar_url = models.CharField(max_length=500, blank=True, default='https://api.dicebear.com/7.x/bottts/svg?seed=Deepland')
     bio = models.TextField(blank=True, default='Deepland platformasida AI va Dasturlash bo\'yicha ta\'lim olmoqda.')
-    rank_title = models.CharField(max_length=100, default='AI Researcher')
-    github_url = models.URLField(blank=True, default='https://github.com')
-    linkedin_url = models.URLField(blank=True, default='https://linkedin.com')
+    is_verified = models.BooleanField(default=False, verbose_name="Tasdiqlangan foydalanuvchi")
+    github_url = models.URLField(blank=True, null=True)
+    linkedin_url = models.URLField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Foydalanuvchi profili'

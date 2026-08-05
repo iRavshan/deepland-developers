@@ -1,23 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}Dasturchi profili — {{ user.username }}{% endblock %}
+{% block title %}Dasturchi profili — {{ profile_user.username }}{% endblock %}
 
 {% block content %}
 <div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
     <!-- Profile Card Header -->
     <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; display: flex; align-items: center; gap: 2rem; margin-bottom: 2.5rem;">
-        <img src="{{ profile.avatar_url }}" alt="Avatar" style="width: 96px; height: 96px; border-radius: var(--radius-full); background: #ffffff; border: 2px solid var(--g-blue); padding: 4px;">
+        <div style="position: relative; display: inline-block; flex-shrink: 0;">
+            <img src="{{ profile.avatar_url }}" alt="Avatar" style="width: 96px; height: 96px; border-radius: 50%; background: #ffffff; border: 2px solid {% if profile.is_online %}var(--g-green){% else %}var(--g-blue){% endif %}; padding: 4px; display: block; transition: border-color 0.3s;">
+            {% if profile.is_online %}
+            <span style="position: absolute; bottom: 4px; right: 4px; width: 20px; height: 20px; background-color: var(--g-green); border: 3px solid #ffffff; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0,0,0,0.05);"></span>
+            {% endif %}
+        </div>
         
         <div>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
-                <h1 style="font-size: 2rem; font-weight: 600; color: var(--text-primary);">{{ user.get_full_name|default:user.username }}</h1>
-                <span class="g-tag g-tag-intermediate">{{ profile.rank_title }}</span>
+                <h1 style="font-size: 2rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                    {{ profile_user.get_full_name|default:profile_user.username }}
+                    {% if profile.is_verified %}
+                    <i data-lucide="badge-check" style="width: 26px; height: 26px; stroke: white; fill: var(--g-blue);"></i>
+                    {% endif %}
+                </h1>
             </div>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0.75rem;">@{{ user.username }} • {{ profile.bio }}</p>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0.75rem;">@{{ profile_user.username }} • {{ profile.bio }}</p>
 
-            <div style="display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
-                <span><i data-lucide="award" style="color: var(--g-blue); width: 16px; vertical-align: middle;"></i> Nishon: <strong>Google Developer Expert</strong></span>
-                <span><i data-lucide="check-circle" style="color: var(--g-green); width: 16px; vertical-align: middle;"></i> Holat: <strong>Faol muhandis</strong></span>
+            <div style="display: flex; gap: 1rem;">
+                {% if profile.github_url %}
+                <a href="{{ profile.github_url }}" target="_blank" style="color: var(--text-primary); text-decoration: none; display: flex; align-items: center; gap: 0.25rem; font-size: 0.9rem; font-weight: 500;">
+                    <i data-lucide="github" style="width: 18px; height: 18px;"></i> GitHub
+                </a>
+                {% endif %}
+                {% if profile.linkedin_url %}
+                <a href="{{ profile.linkedin_url }}" target="_blank" style="color: var(--g-blue); text-decoration: none; display: flex; align-items: center; gap: 0.25rem; font-size: 0.9rem; font-weight: 500;">
+                    <i data-lucide="linkedin" style="width: 18px; height: 18px;"></i> LinkedIn
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>

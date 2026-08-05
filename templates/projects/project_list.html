@@ -58,12 +58,11 @@
                         </span>
                     </div>
                     
-                    <div style="display: flex; gap: 0.5rem;">
-                        {% if project.github_link %}
-                        <a href="{{ project.github_link }}" target="_blank" style="color: var(--text-tertiary); transition: color 0.2s;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-tertiary)'" title="GitHub">
-                            <i data-lucide="github" style="width: 18px;"></i>
-                        </a>
-                        {% endif %}
+                    <div style="display: flex; gap: 2rem; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 0.25rem; color: var(--text-tertiary); font-size: 0.85rem;" title="Layklar">
+                            <i data-lucide="heart" style="width: 16px; {% if request.user in project.likes.all %}color: #e0245e; fill: #e0245e;{% endif %}"></i>
+                            <span style="font-weight: 500;">{{ project.total_likes }}</span>
+                        </div>
                         {% if project.live_link %}
                         <a href="{{ project.live_link }}" target="_blank" style="color: var(--text-tertiary); transition: color 0.2s;" onmouseover="this.style.color='var(--g-blue)'" onmouseout="this.style.color='var(--text-tertiary)'" title="Live Preview">
                             <i data-lucide="external-link" style="width: 18px;"></i>

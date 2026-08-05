@@ -6,16 +6,19 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from apps.courses.models import Category, Course, Lesson, LessonCompletion, LessonFeedback, LessonBookmark
 from apps.users.models import UserProfile
+from apps.projects.models import Project
 
 def home(request):
     featured_courses = Course.objects.filter(is_featured=True)[:6]
     categories = Category.objects.all()
     recent_courses = Course.objects.all().order_by('-created_at')[:4]
+    student_projects = Project.objects.all().order_by('-created_at')[:4]
 
     context = {
         'featured_courses': featured_courses,
         'categories': categories,
         'recent_courses': recent_courses,
+        'student_projects': student_projects,
         'total_courses': Course.objects.count(),
         'total_lessons': Lesson.objects.count(),
     }
