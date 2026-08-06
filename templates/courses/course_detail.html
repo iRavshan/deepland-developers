@@ -29,10 +29,6 @@
                 <i data-lucide="layers" style="color: var(--g-green); width: 18px;"></i>
                 <span>Darslar: <strong>{{ lessons.count }} dars</strong></span>
             </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <i data-lucide="award" style="color: var(--g-yellow); width: 18px;"></i>
-                <span>Sertifikat: <strong>Dasturchi nishoni beriladi</strong></span>
-            </div>
         </div>
 
         {% if user.is_authenticated and lessons.count > 0 %}
