@@ -29,7 +29,6 @@ class Course(models.Model):
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner')
     duration = models.CharField(max_length=50, default='10 soat')
     total_lessons = models.IntegerField(default=12)
-    rating = models.FloatField(default=4.9)
     icon = models.CharField(max_length=50, default='book-open')
     color = models.CharField(max_length=20, default='blue')
     duration = models.CharField(max_length=50, default='10 Hours')
