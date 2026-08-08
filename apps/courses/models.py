@@ -60,7 +60,7 @@ class Unit(models.Model):
     
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='lessons')
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='lessons', blank=True, null=True)
     title = models.CharField(max_length=200)
     order = models.PositiveIntegerField(blank=True, null=True, verbose_name="Tartib raqami")
     content = MDTextField(verbose_name="Kontent")
