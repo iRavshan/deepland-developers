@@ -3,62 +3,61 @@
 {% block title %}Kurslar katalogi — Deepland Dasturchilari{% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
-    <!-- Catalog Header -->
-    <div style="margin-bottom: 3rem;">
-        <div style="font-size: 0.85rem; font-weight: 700; color: var(--g-blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
-            Dasturchilar katalogi
-        </div>
-        <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">
-            Kurslar va Dasturchi yo'nalishlari
-        </h1>
-        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 700px;">
-            Sun'iy intellekt, Algoritmlar va Python muhandisligi bo'yicha mukammal darslik va kurslarni o'rganing.
+<div class="container">
+    <!-- Page Header -->
+    <div class="ed-page-header">
+        <div class="ed-section-label">Dasturchilar katalogi</div>
+        <h1 class="ed-page-title">Kurslar va yo'nalishlar</h1>
+        <p class="ed-page-desc">
+            Sun'iy intellekt, algoritmlar va Python muhandisligi bo'yicha mukammal darslik va kurslarni o'rganing.
         </p>
     </div>
 
-    <!-- Category Filter Chips -->
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
-        <a href="{% url 'course_list' %}" class="google-chip {% if not selected_category %}active{% endif %}">
-            Barcha kurslar
-        </a>
-        {% for cat in categories %}
-        <a href="?category={{ cat.slug }}" class="google-chip {% if selected_category == cat.slug %}active{% endif %}">
-            {{ cat.name }}
-        </a>
-        {% endfor %}
+    <!-- Tab Filters -->
+    <div style="padding-top: 2rem;">
+        <nav class="ed-tab-filters">
+            <a href="{% url 'course_list' %}" class="ed-tab-item {% if not selected_category %}active{% endif %}">
+                Barcha kurslar
+            </a>
+            {% for cat in categories %}
+            <a href="?category={{ cat.slug }}" class="ed-tab-item {% if selected_category == cat.slug %}active{% endif %}">
+                {{ cat.name }}
+            </a>
+            {% endfor %}
+        </nav>
     </div>
 
-    <!-- Courses Grid -->
-    <div class="grid-cards">
-        {% for course in courses %}
-        <div class="g-card">
-            <div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <span class="g-tag g-tag-{{ course.level }}">{{ course.get_level_display }}</span>
+    <!-- Courses List -->
+    <section style="padding-bottom: 5rem;">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for course in courses %}
+            <a href="{% url 'course_detail' course.slug %}" class="ed-list-card ed-color-{{ course.color }}">
+                <div class="ed-list-card-icon g-card-icon-{{ course.color }}">
+                    <i data-lucide="{{ course.icon }}" style="width: 26px; height: 26px;"></i>
                 </div>
-
-                <h3 class="g-card-title">{{ course.title }}</h3>
-                <p class="g-card-desc">{{ course.description }}</p>
-            </div>
-
-            <div class="g-card-footer">
-                <div style="display: flex; gap: 1rem; color: var(--text-secondary);">
-                    <span><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ course.duration }}</span>
-                    <span><i data-lucide="book-open" style="width: 14px; vertical-align: middle;"></i> {{ course.total_lessons }} dars</span>
+                <div class="ed-list-card-body">
+                    <h3>{{ course.title }}</h3>
+                    <p style="margin-bottom: 0.5rem;">{{ course.description|truncatechars:160 }}</p>
+                    <div class="ed-list-card-meta">
+                        <span class="g-tag g-tag-{{ course.level }}">{{ course.get_level_display }}</span>
+                        <span><i data-lucide="clock" style="width: 13px;"></i> {{ course.duration }}</span>
+                        <span><i data-lucide="book-open" style="width: 13px;"></i> {{ course.total_lessons }} dars</span>
+                    </div>
                 </div>
-                <a href="{% url 'course_detail' course.slug %}" class="btn-google btn-google-primary" style="padding: 0.45rem 1.1rem; font-size: 0.85rem;">
-                    Kursni ko'rish
-                </a>
+                <div class="ed-list-card-action">
+                    <span class="btn-google btn-google-primary" style="padding: 0.45rem 1.1rem; font-size: 0.85rem;">
+                        Kursni ko'rish
+                    </span>
+                </div>
+            </a>
+            {% empty %}
+            <div class="ed-empty-state">
+                <i data-lucide="search-x" style="width: 48px; height: 48px; color: var(--text-tertiary);"></i>
+                <h3>Hech qanday kurs topilmadi</h3>
+                <p>Yuqoridagi boshqa kategoriya filtrini tanlab ko'ring.</p>
             </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: var(--bg-surface); border: 1px dashed var(--border-color); border-radius: var(--radius-lg);">
-            <i data-lucide="search-x" style="width: 48px; height: 48px; color: var(--text-tertiary); margin-bottom: 1rem;"></i>
-            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Hech qanday kurs topilmadi</h3>
-            <p style="color: var(--text-secondary);">Yuqoridagi boshqa kategoriya filtrini tanlab ko'ring.</p>
-        </div>
-        {% endfor %}
-    </div>
+    </section>
 </div>
 {% endblock %}

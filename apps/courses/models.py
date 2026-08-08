@@ -31,7 +31,6 @@ class Course(models.Model):
     total_lessons = models.IntegerField(default=12)
     icon = models.CharField(max_length=50, default='book-open')
     color = models.CharField(max_length=20, default='blue')
-    duration = models.CharField(max_length=50, default='10 Hours')
     is_featured = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,14 +62,54 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='lessons')
     title = models.CharField(max_length=200)
-    order = models.PositiveIntegerField(default=1)
+    order = models.PositiveIntegerField(blank=True, null=True, verbose_name="Tartib raqami")
     content = MDTextField(verbose_name="Kontent")
     duration = models.CharField(max_length=20, default='15 daqiqa')
-    duration = models.CharField(max_length=20, default='15 mins')
-
     class Meta:
         ordering = ['order']
         unique_together = ['course', 'order']
+
+    def save(self, *args, **kwargs):
+        skip_shift = kwargs.pop('skip_shift', False)
+        
+        if not self.order:
+            from django.db.models import Max
+            max_order = Lesson.objects.filter(course=self.course).aggregate(Max('order'))['order__max']
+            self.order = (max_order or 0) + 1
+        elif not skip_shift:
+            if self.pk:
+                old_order = Lesson.objects.get(pk=self.pk).order
+                if old_order != self.order:
+                    # Vaqtincha bazada conflict bo'lmasligi uchun chetga olib turamiz
+                    temp_order = 999000 + self.pk
+                    Lesson.objects.filter(pk=self.pk).update(order=temp_order)
+                    
+                    if self.order < old_order:
+                        # Pastga surish (order + 1)
+                        lessons_to_shift = Lesson.objects.filter(
+                            course=self.course, order__gte=self.order, order__lt=old_order
+                        ).exclude(id=self.id).order_by('-order')
+                        for lesson in lessons_to_shift:
+                            lesson.order += 1
+                            lesson.save(skip_shift=True)
+                    else:
+                        # Yuqoriga surish (order - 1)
+                        lessons_to_shift = Lesson.objects.filter(
+                            course=self.course, order__gt=old_order, order__lte=self.order
+                        ).exclude(id=self.id).order_by('order')
+                        for lesson in lessons_to_shift:
+                            lesson.order -= 1
+                            lesson.save(skip_shift=True)
+            else:
+                if Lesson.objects.filter(course=self.course, order=self.order).exists():
+                    lessons_to_shift = Lesson.objects.filter(
+                        course=self.course, order__gte=self.order
+                    ).order_by('-order')
+                    for lesson in lessons_to_shift:
+                        lesson.order += 1
+                        lesson.save(skip_shift=True)
+                    
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.course.title} - {self.title}"

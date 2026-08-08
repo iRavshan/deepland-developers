@@ -32,9 +32,12 @@ def login_view(request):
     if request.method == 'POST':
         if not verify_turnstile(request):
             form = AuthenticationForm(request, data=request.POST)
-            form.add_error(None, "Xavfsizlik tekshiruvidan o'tmadingiz (Turnstile). Iltimos, qaytadan urinib ko'ring.")
+            form.add_error(None, "Xavfsizlik tekshiruvidan o'tmadingiz. Iltimos, qaytadan urinib ko'ring.")
         else:
-            form = AuthenticationForm(request, data=request.POST)
+            data = request.POST.copy()
+            if 'username' in data:
+                data['username'] = data['username'].lower()
+            form = AuthenticationForm(request, data=data)
             if form.is_valid():
                 user = form.get_user()
                 login(request, user)
