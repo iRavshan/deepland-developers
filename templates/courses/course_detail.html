@@ -97,11 +97,11 @@
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
                                     Qayta ko'rish
                                 </a>
                                 {% if user.is_authenticated %}
-                                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.slug %}" style="margin: 0;">
                                     {% csrf_token %}
                                     <input type="hidden" name="redirect_to" value="{% url 'course_detail' course.slug %}">
                                     <button type="submit" class="btn-google" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: var(--text-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-full); cursor: pointer; background: transparent;" title="Bekor qilish">
@@ -115,14 +115,14 @@
                         <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
                             <div style="display: flex; align-items: center; gap: 1.25rem;">
                                 <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
-                                    {{ lesson.order }}
+                                    {{ lesson.slug }}
                                 </div>
                                 <div>
                                     <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
                                     <p style="font-size: 0.85rem; color: var(--text-secondary);">Taxminiy vaqt: {{ lesson.duration }}</p>
                                 </div>
                             </div>
-                            <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                            <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
                                 Darsni boshlash <i data-lucide="arrow-right" style="width: 14px;"></i>
                             </a>
                         </div>
@@ -166,11 +166,11 @@
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
                                     Qayta ko'rish
                                 </a>
                                 {% if user.is_authenticated %}
-                                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.slug %}" style="margin: 0;">
                                     {% csrf_token %}
                                     <input type="hidden" name="redirect_to" value="{% url 'course_detail' course.slug %}">
                                     <button type="submit" class="btn-google" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: var(--text-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-full); cursor: pointer; background: transparent;" title="Bekor qilish">
@@ -184,14 +184,14 @@
                         <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
                             <div style="display: flex; align-items: center; gap: 1.25rem;">
                                 <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
-                                    {{ lesson.order }}
+                                    {{ lesson.slug }}
                                 </div>
                                 <div>
                                     <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
                                     <p style="font-size: 0.85rem; color: var(--text-secondary);">Taxminiy vaqt: {{ lesson.duration }}</p>
                                 </div>
                             </div>
-                            <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                            <a href="{% url 'lesson_detail' course.slug lesson.slug %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
                                 Darsni boshlash <i data-lucide="arrow-right" style="width: 14px;"></i>
                             </a>
                         </div>
@@ -230,7 +230,7 @@
                 </ul>
 
                 {% if lessons.first %}
-                <a href="{% url 'lesson_detail' course.slug lessons.first.order %}" class="btn-google btn-google-primary" style="width: 100%; padding: 0.75rem 0;">
+                <a href="{% url 'lesson_detail' course.slug lessons.first.slug %}" class="btn-google btn-google-primary" style="width: 100%; padding: 0.75rem 0;">
                     1-darsni boshlash <i data-lucide="arrow-right" style="width: 16px;"></i>
                 </a>
                 {% endif %}

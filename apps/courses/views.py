@@ -75,11 +75,11 @@ def learning_guide(request):
     }
     return render(request, 'courses/learning_guide.html', context)
 
-def lesson_detail(request, course_slug, lesson_order):
+def lesson_detail(request, course_slug, lesson_slug):
     course = get_object_or_404(Course, slug=course_slug)
-    lesson = get_object_or_404(Lesson, course=course, order=lesson_order)
-    next_lesson = Lesson.objects.filter(course=course, order=lesson_order + 1).first()
-    prev_lesson = Lesson.objects.filter(course=course, order=lesson_order - 1).first()
+    lesson = get_object_or_404(Lesson, course=course, slug=lesson_slug)
+    next_lesson = Lesson.objects.filter(course=course, order__gt=lesson.order).order_by('order').first() if lesson.order else None
+    prev_lesson = Lesson.objects.filter(course=course, order__lt=lesson.order).order_by('-order').first() if lesson.order else None
 
     lesson.content = markdown.markdown(
         lesson.content,
@@ -126,10 +126,10 @@ def lesson_detail(request, course_slug, lesson_order):
 
 @login_required
 @require_POST
-def toggle_lesson_complete(request, course_slug, lesson_order):
+def toggle_lesson_complete(request, course_slug, lesson_slug):
     """Darsni tugatilgan/tugatilmagan deb belgilash."""
     course = get_object_or_404(Course, slug=course_slug)
-    lesson = get_object_or_404(Lesson, course=course, order=lesson_order)
+    lesson = get_object_or_404(Lesson, course=course, slug=lesson_slug)
 
     completion, created = LessonCompletion.objects.get_or_create(
         user=request.user,
@@ -144,14 +144,14 @@ def toggle_lesson_complete(request, course_slug, lesson_order):
     redirect_to = request.POST.get('redirect_to', '')
     if redirect_to:
         return redirect(redirect_to)
-    return redirect('lesson_detail', course_slug=course.slug, lesson_order=lesson.order)
+    return redirect('lesson_detail', course_slug=course.slug, lesson_slug=lesson.slug)
 
 @login_required
 @require_POST
-def toggle_lesson_feedback(request, course_slug, lesson_order):
+def toggle_lesson_feedback(request, course_slug, lesson_slug):
     """API for toggling lesson feedback (like/dislike)"""
     course = get_object_or_404(Course, slug=course_slug)
-    lesson = get_object_or_404(Lesson, course=course, order=lesson_order)
+    lesson = get_object_or_404(Lesson, course=course, slug=lesson_slug)
     
     try:
         data = json.loads(request.body)
@@ -185,10 +185,10 @@ def toggle_lesson_feedback(request, course_slug, lesson_order):
 
 @login_required
 @require_POST
-def toggle_lesson_bookmark(request, course_slug, lesson_order):
+def toggle_lesson_bookmark(request, course_slug, lesson_slug):
     """API for toggling lesson bookmark"""
     course = get_object_or_404(Course, slug=course_slug)
-    lesson = get_object_or_404(Lesson, course=course, order=lesson_order)
+    lesson = get_object_or_404(Lesson, course=course, slug=lesson_slug)
     
     bookmark, created = LessonBookmark.objects.get_or_create(
         user=request.user,

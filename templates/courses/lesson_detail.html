@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
-
 {% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Dasturchilari{% endblock %}
-
 {% block extra_head %}
+<meta property="og:title" content="{{ lesson.title }} — {{ course.title }}">
+<meta property="og:description" content="{{ course.title }} kursini Deepland Developersda bepul o'rganing">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
 <link id="hljs-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
 <style>
     /* Theme Variables for Code Editor */
@@ -201,13 +203,13 @@
                 <ul class="doc-nav-list" style="margin: 0 0 0.5rem 0; padding: 0;">
                     {% for l in unit.lessons.all %}
                     <li class="doc-nav-item">
-                        <a href="{% url 'lesson_detail' course.slug l.order %}" class="{% if l.order == lesson.order %}active{% endif %}">
+                        <a href="{% url 'lesson_detail' course.slug l.slug %}" class="{% if l.slug == lesson.slug %}active{% endif %}">
                             {% if l.id in completed_lesson_ids %}
                             <span style="width: 22px; height: 22px; border-radius: 50%; background: var(--g-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                 <i data-lucide="check" style="width: 13px; height: 13px;"></i>
                             </span>
                             {% else %}
-                            <span style="font-weight: 700; opacity: 0.7;">{{ l.order }}.</span>
+                            <span style="font-weight: 700; opacity: 0.7;">{{ l.slug }}.</span>
                             {% endif %}
                             <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
                         </a>
@@ -219,13 +221,13 @@
             <ul class="doc-nav-list">
                 {% for l in course.lessons.all %}
                 <li class="doc-nav-item">
-                    <a href="{% url 'lesson_detail' course.slug l.order %}" class="{% if l.order == lesson.order %}active{% endif %}">
+                    <a href="{% url 'lesson_detail' course.slug l.slug %}" class="{% if l.slug == lesson.slug %}active{% endif %}">
                         {% if l.id in completed_lesson_ids %}
                         <span style="width: 22px; height: 22px; border-radius: 50%; background: var(--g-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <i data-lucide="check" style="width: 13px; height: 13px;"></i>
                         </span>
                         {% else %}
-                        <span style="font-weight: 700; opacity: 0.7;">{{ l.order }}.</span>
+                        <span style="font-weight: 700; opacity: 0.7;">{{ l.slug }}.</span>
                         {% endif %}
                         <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
                     </a>
@@ -262,7 +264,7 @@
             <i data-lucide="chevron-right" style="width: 14px;"></i>
                 <a href="{% url 'course_detail' course.slug %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a>
                 <i data-lucide="chevron-right" style="width: 14px;"></i>
-                <span style="color: var(--text-primary); font-weight: 500;">{{ lesson.order }}-dars</span>
+                <span style="color: var(--text-primary); font-weight: 500;">{{ lesson.slug }}-dars</span>
             </div>
         </div>
 
@@ -270,7 +272,7 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
                 <div>
                     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                        <span class="g-tag g-tag-intermediate">{{ lesson.order }}-dars / {{ course.lessons.count }}</span>
+                        <span class="g-tag g-tag-intermediate">{{ lesson.slug }}-dars / {{ course.lessons.count }}</span>
                         <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
                         {% if is_current_completed %}
                         <span style="color: var(--g-green); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
@@ -306,7 +308,7 @@
                         <div style="font-size: 0.85rem; color: var(--text-secondary);">Siz ushbu darsni muvaffaqiyatli tugatgangiz.</div>
                     </div>
                 </div>
-                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.slug %}" style="margin: 0;">
                     {% csrf_token %}
                     <button type="submit" class="btn-google btn-google-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
                         <i data-lucide="rotate-ccw" style="width: 14px;"></i> Bekor qilish
@@ -322,7 +324,7 @@
                         <div style="font-size: 0.85rem; color: var(--text-secondary);">Darsni tugatganingizni belgilang va keyingisiga o'ting.</div>
                     </div>
                 </div>
-                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.slug %}" style="margin: 0;">
                     {% csrf_token %}
                     <button type="submit" class="btn-google btn-google-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">
                         <i data-lucide="check-circle" style="width: 16px;"></i> Tugatildi deb belgilash
@@ -335,7 +337,7 @@
             <!-- Navigation Buttons -->
             <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
                 {% if prev_lesson %}
-                <a href="{% url 'lesson_detail' course.slug prev_lesson.order %}" class="btn-google btn-google-outline">
+                <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="btn-google btn-google-outline">
                     <i data-lucide="arrow-left" style="width: 16px;"></i> Oldingi dars
                 </a>
                 {% else %}
@@ -343,7 +345,7 @@
                 {% endif %}
 
                 {% if next_lesson %}
-                <a href="{% url 'lesson_detail' course.slug next_lesson.order %}" class="btn-google btn-google-primary">
+                <a href="{% url 'lesson_detail' course.slug next_lesson.slug %}" class="btn-google btn-google-primary">
                     Keyingi dars <i data-lucide="arrow-right" style="width: 16px;"></i>
                 </a>
                 {% else %}
@@ -522,7 +524,7 @@
     });
 
     function handleFeedback(type) {
-        var url = "{% url 'toggle_lesson_feedback' course.slug lesson.order %}";
+        var url = "{% url 'toggle_lesson_feedback' course.slug lesson.slug %}";
         var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         
         var btnLike = document.getElementById('btn-like');
@@ -563,7 +565,7 @@
     }
 
     function toggleBookmark() {
-        var url = "{% url 'toggle_lesson_bookmark' course.slug lesson.order %}";
+        var url = "{% url 'toggle_lesson_bookmark' course.slug lesson.slug %}";
         var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         
         var btnBookmark = document.getElementById('btn-bookmark');
