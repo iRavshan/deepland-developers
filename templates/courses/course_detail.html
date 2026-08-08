@@ -134,11 +134,78 @@
                         {% endfor %}
                     </div>
                 </details>
-                {% empty %}
+                {% endfor %}
+
+                {% if unitless_lessons %}
+                <details class="unit-accordion" open>
+                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.2s ease;">
+                        <div style="display: flex; flex-direction: column;">
+                            <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                                Umumiy darslar
+                            </h3>
+                        </div>
+                        <div class="accordion-icons" style="color: var(--text-tertiary); display: flex; align-items: center;">
+                            <i data-lucide="chevron-right" style="width: 20px;" class="icon-closed"></i>
+                            <i data-lucide="chevron-down" style="width: 20px;" class="icon-open"></i>
+                        </div>
+                    </summary>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; padding-left: 0.5rem;">
+                        {% for lesson in unitless_lessons %}
+                        {% if lesson.id in completed_lesson_ids %}
+                        <div style="background: #ffffff; border: 1px solid var(--g-green); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
+                            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                                <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-green); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                                    <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
+                                    <p style="font-size: 0.85rem; color: var(--g-green); font-weight: 500;">
+                                        <i data-lucide="circle-check" style="width: 13px; vertical-align: middle;"></i> Tugatildi · {{ lesson.duration }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                    Qayta ko'rish
+                                </a>
+                                {% if user.is_authenticated %}
+                                <form method="post" action="{% url 'toggle_lesson_complete' course.slug lesson.order %}" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="redirect_to" value="{% url 'course_detail' course.slug %}">
+                                    <button type="submit" class="btn-google" style="padding: 0.4rem 0.75rem; font-size: 0.8rem; color: var(--text-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-full); cursor: pointer; background: transparent;" title="Bekor qilish">
+                                        <i data-lucide="x" style="width: 14px;"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.15s ease;" class="g-card-hover-mini">
+                            <div style="display: flex; align-items: center; gap: 1.25rem;">
+                                <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--g-blue-bg); color: var(--g-blue-text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                                    {{ lesson.order }}
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary);">{{ lesson.title }}</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Taxminiy vaqt: {{ lesson.duration }}</p>
+                                </div>
+                            </div>
+                            <a href="{% url 'lesson_detail' course.slug lesson.order %}" class="btn-google btn-google-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                                Darsni boshlash <i data-lucide="arrow-right" style="width: 14px;"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endif %}
+
+                {% if not course.units.exists and not unitless_lessons %}
                 <div style="padding: 2rem; text-align: center; background: var(--bg-surface); border-radius: var(--radius-md); color: var(--text-secondary);">
                     Ushbu kurs uchun darslar tayyorlanmoqda.
                 </div>
-                {% endfor %}
+                {% endif %}
             </div>
         </div>
 

@@ -56,6 +56,7 @@ def course_detail(request, slug):
     context = {
         'course': course,
         'lessons': lessons,
+        'unitless_lessons': lessons.filter(unit__isnull=True),
         'completed_lesson_ids': completed_lesson_ids,
     }
     return render(request, 'courses/course_detail.html', context)
