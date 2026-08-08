@@ -209,7 +209,7 @@
                                 <i data-lucide="check" style="width: 13px; height: 13px;"></i>
                             </span>
                             {% else %}
-                            <span style="font-weight: 700; opacity: 0.7;">{{ l.slug }}.</span>
+                            <span style="font-weight: 700; opacity: 0.7;">{{ l.id }}.</span>
                             {% endif %}
                             <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
                         </a>
@@ -227,7 +227,7 @@
                             <i data-lucide="check" style="width: 13px; height: 13px;"></i>
                         </span>
                         {% else %}
-                        <span style="font-weight: 700; opacity: 0.7;">{{ l.slug }}.</span>
+                        <span style="font-weight: 700; opacity: 0.7;">{{ l.id }}.</span>
                         {% endif %}
                         <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ l.title }}</span>
                     </a>
@@ -264,7 +264,7 @@
             <i data-lucide="chevron-right" style="width: 14px;"></i>
                 <a href="{% url 'course_detail' course.slug %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a>
                 <i data-lucide="chevron-right" style="width: 14px;"></i>
-                <span style="color: var(--text-primary); font-weight: 500;">{{ lesson.slug }}-dars</span>
+                <span style="color: var(--text-primary); font-weight: 500;">{{ lesson.id }}-dars</span>
             </div>
         </div>
 
@@ -272,7 +272,7 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
                 <div>
                     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                        <span class="g-tag g-tag-intermediate">{{ lesson.slug }}-dars / {{ course.lessons.count }}</span>
+                        <span class="g-tag g-tag-intermediate">{{ lesson.id }}-dars / {{ course.lessons.count }}</span>
                         <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
                         {% if is_current_completed %}
                         <span style="color: var(--g-green); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.3rem;">
