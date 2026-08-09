@@ -179,6 +179,164 @@
     .lesson-content a:hover {
         text-decoration: underline;
     }
+
+    /* ===== MOBILE SIDEBAR OVERLAY ===== */
+    .mobile-sidebar-toggle {
+        display: none;
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--g-blue);
+        color: #fff;
+        border: none;
+        box-shadow: 0 4px 12px rgba(26,115,232,0.35);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1100;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mobile-sidebar-toggle:hover {
+        transform: scale(1.08);
+        box-shadow: 0 6px 20px rgba(26,115,232,0.45);
+    }
+
+    .mobile-sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 1050;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .mobile-sidebar-backdrop.active {
+        display: block;
+        opacity: 1;
+    }
+
+    /* ===== RESPONSIVE: TABLETS (max-width: 1024px) ===== */
+    @media (max-width: 1024px) {
+        .doc-content {
+            padding: 2rem 1.5rem !important;
+            margin: 10px auto;
+        }
+        .doc-article h1 {
+            font-size: 1.75rem !important;
+        }
+    }
+
+    /* ===== RESPONSIVE: MOBILE (max-width: 860px) ===== */
+    @media (max-width: 860px) {
+        /* Mobile sidebar as overlay */
+        .doc-sidebar {
+            display: block !important;
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            left: auto !important;
+            bottom: 0;
+            width: 280px !important;
+            height: 100vh !important;
+            z-index: 1060;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1) !important;
+            padding-top: 1rem !important;
+            box-shadow: none;
+        }
+        .doc-sidebar.mobile-open {
+            transform: translateX(0);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+        }
+
+        .mobile-sidebar-toggle {
+            display: flex;
+        }
+
+        .sidebar-toggle-btn {
+            display: none !important;
+        }
+
+        .doc-content {
+            padding: 1.5rem 1rem !important;
+            margin: 8px auto;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .doc-article h1 {
+            font-size: 1.5rem !important;
+        }
+
+        /* Stack title + bookmark vertically */
+        .lesson-header-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.75rem !important;
+        }
+
+        /* Stack completion box */
+        .lesson-complete-box {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+        }
+
+        /* Breadcrumbs: smaller and wrap */
+        .lesson-breadcrumbs {
+            font-size: 0.78rem !important;
+            flex-wrap: wrap;
+        }
+
+        /* Lesson meta tags row */
+        .lesson-meta-row {
+            flex-wrap: wrap;
+            gap: 0.5rem !important;
+        }
+
+        .lesson-content {
+            font-size: 0.98rem !important;
+        }
+    }
+
+    /* ===== RESPONSIVE: SMALL PHONES (max-width: 480px) ===== */
+    @media (max-width: 480px) {
+        .doc-content {
+            padding: 1rem 0.75rem !important;
+        }
+        .doc-article h1 {
+            font-size: 1.3rem !important;
+        }
+        .lesson-content {
+            font-size: 0.93rem !important;
+            line-height: 1.7 !important;
+        }
+
+        /* Navigation buttons */
+        .lesson-nav-buttons {
+            flex-direction: column !important;
+            gap: 0.75rem;
+        }
+        .lesson-nav-buttons a {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .mobile-sidebar-toggle {
+            bottom: 1rem;
+            right: 1rem;
+            width: 44px;
+            height: 44px;
+        }
+
+        .doc-sidebar {
+            width: 260px !important;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -257,11 +415,17 @@
         <i data-lucide="chevron-right" class="toggle-icon-closed" style="width: 18px;"></i>
     </button>
 
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Darslar ro'yxatini ochish">
+        <i data-lucide="list" style="width: 22px; height: 22px;"></i>
+    </button>
+    <div class="mobile-sidebar-backdrop" id="mobileSidebarBackdrop"></div>
+
     <!-- Main Content Article -->
     <main class="doc-content">
         <!-- Breadcrumbs -->
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
-            <div style="display: flex; align-items: center; gap: 0.4rem; color: var(--text-tertiary); font-size: 0.85rem;">
+            <div class="lesson-breadcrumbs" style="display: flex; align-items: center; gap: 0.4rem; color: var(--text-tertiary); font-size: 0.85rem;">
                 <a href="{% url 'course_list' %}" style="color: var(--text-secondary); text-decoration: none;">Kurslar</a>
             <i data-lucide="chevron-right" style="width: 14px;"></i>
                 <a href="{% url 'course_detail' course.slug %}" style="color: var(--text-secondary); text-decoration: none;">{{ course.title }}</a>
@@ -271,9 +435,9 @@
         </div>
 
         <article class="doc-article">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+            <div class="lesson-header-row" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
                 <div>
-                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                    <div class="lesson-meta-row" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
                         <span class="g-tag g-tag-intermediate">{{ lesson.order }}-dars / {{ course.lessons.count }}</span>
                         <span style="color: var(--text-tertiary); font-size: 0.85rem;"><i data-lucide="clock" style="width: 14px; vertical-align: middle;"></i> {{ lesson.duration }}</span>
                         {% if is_current_completed %}
@@ -299,7 +463,7 @@
 
             {% if user.is_authenticated %}
             <!-- Darsni tugatish tugmasi -->
-            <div style="margin: 2rem 0; padding: 1.5rem; border-radius: var(--radius-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between;">
+            <div class="lesson-complete-box" style="margin: 2rem 0; padding: 1.5rem; border-radius: var(--radius-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between;">
                 {% if is_current_completed %}
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                     <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--g-green); color: #fff; display: flex; align-items: center; justify-content: center;">
@@ -337,7 +501,7 @@
             {% endif %}
 
             <!-- Navigation Buttons -->
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
+            <div class="lesson-nav-buttons" style="display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
                 {% if prev_lesson %}
                 <a href="{% url 'lesson_detail' course.slug prev_lesson.slug %}" class="btn-google btn-google-outline">
                     <i data-lucide="arrow-left" style="width: 16px;"></i> Oldingi dars
@@ -521,6 +685,35 @@
             toggleBtn.addEventListener('click', function() {
                 var isNowCollapsed = wrapper.classList.toggle('sidebar-collapsed');
                 localStorage.setItem('sidebar_collapsed', isNowCollapsed);
+            });
+        }
+
+        // Mobile sidebar toggle
+        var mobileSidebarBtn = document.getElementById('mobileSidebarToggle');
+        var mobileSidebarBackdrop = document.getElementById('mobileSidebarBackdrop');
+        var sidebar = document.querySelector('.doc-sidebar');
+
+        function openMobileSidebar() {
+            sidebar.classList.add('mobile-open');
+            mobileSidebarBackdrop.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobileSidebar() {
+            sidebar.classList.remove('mobile-open');
+            mobileSidebarBackdrop.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (mobileSidebarBtn) {
+            mobileSidebarBtn.addEventListener('click', openMobileSidebar);
+        }
+        if (mobileSidebarBackdrop) {
+            mobileSidebarBackdrop.addEventListener('click', closeMobileSidebar);
+        }
+        // Close sidebar when a lesson link is clicked on mobile
+        if (sidebar) {
+            sidebar.querySelectorAll('.doc-nav-item a').forEach(function(link) {
+                link.addEventListener('click', closeMobileSidebar);
             });
         }
     });
