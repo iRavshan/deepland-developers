@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Dasturchilari{% endblock %}
 {% block extra_head %}
 <meta property="og:title" content="{{ lesson.title }} — {{ course.title }}">
 <meta property="og:description" content="{{ course.title }} kursini Deepland Developersda bepul o'rganing">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/meta/meta_photo.png' %}">
 <link id="hljs-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
 <style>
     /* Theme Variables for Code Editor */
