@@ -1,6 +1,26 @@
+import re
 from django.db import models
 from django.contrib.auth.models import User
 from mdeditor.fields import MDTextField
+
+
+def _compute_lesson_duration(content: str) -> str:
+    """Dars kontentiga qarab taxminiy davomiylikni hisoblaydi."""
+    text = content or ''
+    # So'zlar soni
+    word_count = len(re.findall(r'\w+', text))
+    # Kod bloklari soni (har biri +1 daqiqa)
+    code_blocks = len(re.findall(r'```[\s\S]*?```', text))
+    # Texnik matn uchun ~100 so'z/daqiqa + kod bloklari
+    minutes = max(5, word_count // 100 + code_blocks)
+    # 5 ga qarab yaxlitlash
+    minutes = round(minutes / 5) * 5
+    minutes = max(5, minutes)
+    if minutes >= 60:
+        h = minutes // 60
+        m = minutes % 60
+        return f"{h} soat {m} daqiqa" if m else f"{h} soat"
+    return f"{minutes} daqiqa"
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -27,8 +47,6 @@ class Course(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='courses/', blank=True, null=True, verbose_name="Kurs rasmi")
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner')
-    duration = models.CharField(max_length=50, default='10 soat')
-    total_lessons = models.IntegerField(default=12)
     icon = models.CharField(max_length=50, default='book-open')
     color = models.CharField(max_length=20, default='blue')
     is_featured = models.BooleanField(default=True)
@@ -40,9 +58,30 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
-    
-    def total_lessons(self):
-        return Lesson.objects.filter(unit__course=self).count()
+
+    @property
+    def total_lessons_count(self):
+        """Kursdagi barcha darslar soni."""
+        return self.lessons.count()
+
+    @property
+    def duration(self):
+        """Barcha darslar davomiyligining yig'indisi."""
+        total_minutes = 0
+        for lesson in self.lessons.all():
+            m = re.search(r'(\d+)\s*daqiqa', lesson.duration or '')
+            if m:
+                total_minutes += int(m.group(1))
+            h = re.search(r'(\d+)\s*soat', lesson.duration or '')
+            if h:
+                total_minutes += int(h.group(1)) * 60
+        if total_minutes == 0:
+            return '—'
+        if total_minutes >= 60:
+            hrs = total_minutes // 60
+            mins = total_minutes % 60
+            return f"{hrs} soat {mins} daqiqa" if mins else f"{hrs} soat"
+        return f"{total_minutes} daqiqa"
     
 class Unit(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='units')
@@ -65,13 +104,18 @@ class Lesson(models.Model):
     slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
     order = models.PositiveIntegerField(blank=True, null=True, verbose_name="Tartib raqami")
     content = MDTextField(verbose_name="Kontent")
-    duration = models.CharField(max_length=20, default='15 daqiqa')
+    duration = models.CharField(
+        max_length=30, default='5 daqiqa', editable=False,
+        verbose_name="Davomiyligi",
+        help_text="Avtomatik hisoblanadi"
+    )
     class Meta:
         ordering = ['order']
         unique_together = ['course', 'order']
 
     def save(self, *args, **kwargs):
         from django.utils.text import slugify
+        # Slug
         if not self.slug:
             base_slug = slugify(self.title)
             slug = base_slug
@@ -80,6 +124,9 @@ class Lesson(models.Model):
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
+
+        # Davomiylikni avtomatik hisoblash
+        self.duration = _compute_lesson_duration(self.content)
 
         skip_shift = kwargs.pop('skip_shift', False)
         
