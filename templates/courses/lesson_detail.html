@@ -1,6 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}{{ lesson.title }} — {{ course.title }} — Deepland Dasturchilari{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ lesson.title }} — {{ course.title }} kursidan dars. Deepland Developers platformasida bepul o'rganing.">{% endblock %}
+{% block canonical %}<link rel="canonical" href="https://devs.deepland.uz/courses/{{ course.slug }}/lesson/{{ lesson.slug }}/">{% endblock %}
+{% block json_ld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ lesson.title }}",
+  "description": "{{ course.title }} kursidan dars",
+  "inLanguage": "uz",
+  "url": "https://devs.deepland.uz/courses/{{ course.slug }}/lesson/{{ lesson.slug }}/",
+  "isPartOf": {
+    "@type": "Course",
+    "name": "{{ course.title }}",
+    "url": "https://devs.deepland.uz/courses/{{ course.slug }}/"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Deepland Developers"
+  }
+}
+</script>
+{% endblock %}
 {% block extra_head %}
 <meta property="og:title" content="{{ lesson.title }} — {{ course.title }}">
 <meta property="og:description" content="{{ course.title }} kursini Deepland Developersda bepul o'rganing">

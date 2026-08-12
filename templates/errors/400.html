@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}400 — Noto'g'ri so'rov — Deepland Dasturchilari{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 6rem 2rem;">
+    <h1 style="font-size: 5rem; font-weight: 700; color: var(--g-blue); margin-bottom: 1rem;">400</h1>
+    <h2 style="font-size: 1.75rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">Noto'g'ri so'rov</h2>
+    <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 2rem auto;">So'rov noto'g'ri formatda yuborildi.</p>
+    <a href="{% url 'home' %}" class="btn-google btn-google-primary">
+        Bosh sahifaga qaytish
+    </a>
+</div>
+{% endblock %}

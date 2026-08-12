@@ -1,0 +1,26 @@
+# Deepland Developers
+
+> Deepland Developers — O'zbek tilidagi bepul ta'lim platformasi. Sun'iy intellekt, algoritmlar, Python va dasturiy muhandislik bo'yicha amaliy kurslar.
+
+## Platforma haqida
+
+Deepland Developers (devs.deepland.uz) — bu O'zbek tilidagi dasturchilar uchun ta'lim platformasi. Platformada sun'iy intellekt (AI), mashinali o'rganish (Machine Learning), algoritmlar, ma'lumotlar tuzilmalari va zamonaviy dasturiy muhandislik bo'yicha bepul kurslar mavjud.
+
+## Asosiy yo'nalishlar
+
+- Sun'iy intellekt va Machine Learning
+- Algoritmlar va ma'lumotlar tuzilmalari
+- Python dasturlash tili
+- Dasturiy muhandislik (Software Engineering)
+
+## Kurslar
+
+Barcha kurslar amaliy loyihalar, kod namunalari va bosqichma-bosqich tushuntirishlar bilan boyitilgan. Har bir dars matematik asoslar, PyTorch/Python kodlari va real arxitekturalarni o'z ichiga oladi.
+
+## Til
+
+Barcha kontent O'zbek tilida yozilgan.
+
+## URL
+
+https://devs.deepland.uz

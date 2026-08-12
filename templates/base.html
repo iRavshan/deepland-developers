@@ -21,7 +21,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Deepland Dasturchilari — Sun'iy intellekt va Muhandislik{% endblock %}</title>
-    <meta name="description" content="Deepland Dasturchilar platformasi - Sun'iy intellekt, Mashinali o'rgatish va Kompyuter fanlarini amaliy qo'llanmalar orqali o'rganing.">
+    {% block meta_description %}<meta name="description" content="Deepland Dasturchilar platformasi - Sun'iy intellekt, Mashinali o'rgatish va Kompyuter fanlarini amaliy qo'llanmalar orqali o'rganing.">{% endblock %}
+    {% block canonical %}{% endblock %}
+    {% block og_tags %}
+    <meta property="og:site_name" content="Deepland Developers">
+    <meta property="og:locale" content="uz_UZ">
+    {% endblock %}
+    {% block json_ld %}{% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">

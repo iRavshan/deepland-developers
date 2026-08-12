@@ -3,6 +3,32 @@
 
 {% block title %}{{ project.title }} | Loyihalar{% endblock %}
 
+{% block meta_description %}<meta name="description" content="{{ project.description|truncatechars:160 }}">{% endblock %}
+{% block canonical %}<link rel="canonical" href="https://devs.deepland.uz{{ project.get_absolute_url }}">{% endblock %}
+{% block og_tags %}
+<meta property="og:title" content="{{ project.title }} — Deepland Loyihalar">
+<meta property="og:description" content="{{ project.description|truncatechars:200 }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://devs.deepland.uz{{ project.get_absolute_url }}">
+<meta property="og:site_name" content="Deepland Developers">
+<meta property="og:locale" content="uz_UZ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ project.title }} — Deepland Loyihalar">
+<meta name="twitter:description" content="{{ project.description|truncatechars:200 }}">
+{% endblock %}
+{% block json_ld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ project.title }}",
+  "description": "{{ project.description|truncatechars:300 }}",
+  "url": "https://devs.deepland.uz{{ project.get_absolute_url }}",
+  "applicationCategory": "DeveloperApplication"
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container" style="padding: 4rem 0;">
     <div style="max-width: 1100px; margin: 0 auto;">

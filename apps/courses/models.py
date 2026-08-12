@@ -12,10 +12,7 @@ def _compute_lesson_duration(content: str) -> str:
     # Kod bloklari soni (har biri +1 daqiqa)
     code_blocks = len(re.findall(r'```[\s\S]*?```', text))
     # Texnik matn uchun ~100 so'z/daqiqa + kod bloklari
-    minutes = max(5, word_count // 100 + code_blocks)
-    # 5 ga qarab yaxlitlash
-    minutes = round(minutes / 5) * 5
-    minutes = max(5, minutes)
+    minutes = max(1, word_count // 100 + code_blocks)
     if minutes >= 60:
         h = minutes // 60
         m = minutes % 60

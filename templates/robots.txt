@@ -33,4 +33,4 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-Sitemap: https://deepland.uz/sitemap.xml    
+Sitemap: https://devs.deepland.uz/sitemap.xml

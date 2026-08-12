@@ -1,6 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}{{ course.title }} — Deepland Dasturchilari{% endblock %}
+
+{% block meta_description %}<meta name="description" content="{{ course.description|truncatechars:160 }}">{% endblock %}
+{% block canonical %}<link rel="canonical" href="https://devs.deepland.uz/courses/{{ course.slug }}/">{% endblock %}
+{% block og_tags %}
+<meta property="og:title" content="{{ course.title }} — Deepland Dasturchilari">
+<meta property="og:description" content="{{ course.description|truncatechars:200 }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://devs.deepland.uz/courses/{{ course.slug }}/">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/meta/meta_photo.png' %}">
+<meta property="og:site_name" content="Deepland Developers">
+<meta property="og:locale" content="uz_UZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ course.title }} — Deepland Dasturchilari">
+<meta name="twitter:description" content="{{ course.description|truncatechars:200 }}">
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/meta/meta_photo.png' %}">
+{% endblock %}
+{% block json_ld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "{{ course.title|escapejs }}",
+  "description": "{{ course.description|truncatechars:300|escapejs }}",
+  "provider": {
+    "@type": "Organization",
+    "name": "Deepland Developers",
+    "url": "https://devs.deepland.uz"
+  },
+  "inLanguage": "uz",
+  "url": "https://devs.deepland.uz/courses/{{ course.slug }}/"
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">

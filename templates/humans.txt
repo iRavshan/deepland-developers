@@ -1,0 +1,9 @@
+/* TEAM */
+Platform: Deepland Developers
+URL: https://devs.deepland.uz
+Location: Qarshi, O'zbekiston
+
+/* SITE */
+Language: O'zbek (uz)
+Framework: Django
+Standards: HTML5, CSS3, JavaScript
